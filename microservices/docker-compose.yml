@@ -1,0 +1,21 @@
+version: '3'
+services:
+  web:
+    build: ./web
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - web
+      - moisture
+  moisture:
+    build: ./moisture
+    volumes:
+      - ./moisture:/usr/src/app
+  humidity:
+    build: ./humidity
+    volumes:
+      - ./humidity:/usr/src/app
