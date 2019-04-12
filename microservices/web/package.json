@@ -9,6 +9,7 @@
   "scripts": {
     "start": "webpack-dev-server --open --compress --mode development",
     "watch": "webpack --mode development -w",
+    "watch:silent": "webpack --mode development -w --silent",
     "dev": "webpack --mode development --progress",
     "build": "webpack --mode production --progress",
     "clean": "rm -rf public",
@@ -30,6 +31,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.3",
+    "core-js": "2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   }

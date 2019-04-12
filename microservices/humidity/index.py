@@ -30,6 +30,6 @@ if __name__ == '__main__':
         'server.socket_host': '0.0.0.0',
         'server.socket_port': 5002
     })
-    cherrypy.tree.mount(Humidity(), '/api/v1/humidity', conf)
+    cherrypy.tree.mount(Humidity(), '/api/v1/greenhouse/54321/humidity', conf)
     cherrypy.engine.start()
     cherrypy.engine.block()
