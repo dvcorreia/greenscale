@@ -1,20 +1,19 @@
 version: '3'
 services:
-  web:
-    build: ./web
-    volumes:
-      - ./web/:/app
   nginx:
     image: nginx:latest
     ports:
       - "80:80"
     volumes:
       - ./default.conf:/etc/nginx/conf.d/default.conf
-      - ./web/public:/svr/www/static
     depends_on:
       - web
       - moisture
       - humidity
+  web:
+    build: ./web
+    volumes:
+      - ./web/public:/usr/share/nginx/html
   moisture:
     build: ./moisture
     volumes:
@@ -23,3 +22,9 @@ services:
     build: ./humidity
     volumes:
       - ./humidity:/usr/src/app
+  broker:
+    image: emitter/server
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./broker/emitter.env

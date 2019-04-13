@@ -12,6 +12,7 @@
     "watch:silent": "webpack --mode development -w --silent",
     "dev": "webpack --mode development --progress",
     "build": "webpack --mode production --progress",
+    "build:silent": "webpack --mode production --silent",
     "clean": "rm -rf public",
     "clean:all": "yarn clean & rm -rf node_modules"
   },
