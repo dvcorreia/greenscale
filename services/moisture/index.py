@@ -1,35 +1,36 @@
-import markdown
 import cherrypy
-import json
-import os
 
 
+@cherrypy.popargs('user')
+class User(object):
+    def __init__(self):
+        self.greenhouse = Greenhouse()
+
+
+@cherrypy.popargs('greenhouse')
+class Greenhouse(object):
+    def __init__(self):
+        self.moisture = Moisture()
+
+
+@cherrypy.popargs('moisture')
 class Moisture(object):
     exposed = True
 
-    def __init__(self):
-        pass
-
-    def GET(self, *uri):
-        if len(uri) == 0:
-            with open(os.path.dirname(os.path.abspath(__file__)) + '/README.md', 'r') as markdown_file:
-                content = markdown_file.read()
-                return markdown.markdown(content)
-
-        return json.dumps({"error": "route doesn't exist"})
+    def GET(self, user, greenhouse, moisture):
+        return 'user: %s\ngreenhouse: %s\nmoisture: %s\n' % (user, greenhouse, moisture)
 
 
 if __name__ == '__main__':
-    conf = {
-        '/': {
-            'request.dispatch': cherrypy.dispatch.MethodDispatcher()
-        }
-    }
-
     cherrypy.config.update({
         'server.socket_host': '0.0.0.0',
         'server.socket_port': 5001
     })
-    cherrypy.tree.mount(Moisture(), '/api/v1/greenhouse/12345/moisture', conf)
+
+    cherrypy.tree.mount(User(), '/api/v1', {
+        '/': {
+            'request.dispatch': cherrypy.dispatch.MethodDispatcher()
+        }
+    })
     cherrypy.engine.start()
     cherrypy.engine.block()
