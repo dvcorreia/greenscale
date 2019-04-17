@@ -1,2 +1,2 @@
-cherrypy>=18.0.0
-markdown==3.1
+cherrypy
+mongoengine

@@ -11,6 +11,6 @@ This service provides an API to the moisture database throught RESTfull and MQTT
 
 `api/v1/<user-id>/greenhouse/<id>/moisture/<id>/`
 
-    - `GET`: view sensor collection
-    - `POST`: create new telemetric
+`GET`: view sensor collection
 
+`POST`: create new telemetric

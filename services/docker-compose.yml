@@ -1,5 +1,6 @@
 version: '3'
 services:
+  # Server that manages load balancing and reverse proxy
   nginx:
     image: nginx:latest
     ports:
@@ -10,21 +11,33 @@ services:
       - web
       - moisture
       - humidity
-  web:
-    build: ./web
-    volumes:
-      - ./web/public:/usr/share/nginx/html
-  moisture:
-    build: ./moisture
-    volumes:
-      - ./moisture:/usr/src/app
-  humidity:
-    build: ./humidity
-    volumes:
-      - ./humidity:/usr/src/app
+  # MQTT broker
   broker:
     image: emitter/server
     ports:
       - "8080:8080"
     env_file:
       - ./broker/emitter.env
+  # Web application interface
+  web:
+    build: ./web
+    volumes:
+      - ./web/public:/usr/share/nginx/html
+  # Moisture service
+  moisture:
+    build: ./moisture
+    volumes:
+      - ./moisture:/usr/src/app
+    depends_on:
+      - db-moisture
+  db-moisture:
+    image: mongo
+    restart: always
+    env_file:
+      - ./moisture/db.env
+  # Humidity service
+  humidity:
+    build: ./humidity
+    volumes:
+      - ./humidity:/usr/src/app
+
