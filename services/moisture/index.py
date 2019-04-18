@@ -1,5 +1,16 @@
 import cherrypy
 import os
+from mongoengine import connect
+
+
+class DBMoitureHandler(object):
+    def __init__(self):
+        connect(
+            db='moistures_db',
+            username=os.environ.get('MONGO_INITDB_ROOT_USERNAME'),
+            password=os.environ.get('MONGO_INITDB_ROOT_PASSWORD'),
+            host='mongodb://db-moisture/moisture'
+        )
 
 
 class Dispatcher(object):
@@ -28,7 +39,7 @@ class Dispatcher(object):
 
 class Moisture(object):
     def __init__(self):
-        pass
+        self.dbmoisture_handler = DBMoitureHandler()
 
     exposed = True
 

@@ -28,13 +28,17 @@ services:
     build: ./moisture
     volumes:
       - ./moisture:/usr/src/app
+    env_file:
+      ./moisture/db.env
     depends_on:
       - db-moisture
+    restart: on-failure
   db-moisture:
     image: mongo
-    restart: always
     env_file:
       - ./moisture/db.env
+    ports:
+      - "27017:27017"
   # Humidity service
   humidity:
     build: ./humidity
