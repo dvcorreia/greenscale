@@ -1,6 +1,6 @@
 version: '3'
 services:
-  # Server that manages load balancing and reverse proxy
+  # ------ Load balancing and Reverse proxy ------
   nginx:
     image: nginx:latest
     ports:
@@ -11,19 +11,47 @@ services:
       - web
       - moisture
       - humidity
-  # MQTT broker
+  # ------ MQTT broker ------
   broker:
     image: emitter/server
     ports:
       - "8080:8080"
     env_file:
       - ./broker/emitter.env
-  # Web application interface
+  # ------ Web application interface ------
   web:
     build: ./web
     volumes:
       - ./web/public:/usr/share/nginx/html
-  # Moisture service
+  # ------ User service ------
+  user:
+    build: ./user
+    volumes:
+      - ./user:/usr/src/app
+    env_file:
+      ./user/db.env
+    depends_on:
+      - db
+    restart: on-failure
+  # ------ Greenhouse service ------
+  greenhouse:
+    build: ./greenhouse
+    volumes:
+      - ./greenhouse:/usr/src/app
+    env_file:
+      ./greenhouse/db.env
+    depends_on:
+      - db
+    restart: on-failure
+  # ------ Main DB ------
+  db:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    ports:
+      - "27017:27017"
+  # ------ Moisture service ------
   moisture:
     build: ./moisture
     volumes:
@@ -35,13 +63,20 @@ services:
     restart: on-failure
   db-moisture:
     image: mongo
-    env_file:
-      - ./moisture/db.env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
     ports:
-      - "27017:27017"
-  # Humidity service
+      - "27018:27017"
+  # ------ Humidity service ------
   humidity:
     build: ./humidity
     volumes:
       - ./humidity:/usr/src/app
-
+  db-humidity:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    ports:
+      - "27019:27017"

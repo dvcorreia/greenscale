@@ -4,7 +4,6 @@ import datetime
 
 class User(Document):
     username = StringField(required=True, max_length=50)
-    password = StringField(required=True)
     greenhouses = ListField(ReferenceField(Greenhouse))
 
 
