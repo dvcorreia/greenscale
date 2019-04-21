@@ -33,7 +33,7 @@ This documents contains the mongodb data schemas
     "id": ObjectIdField(required=True),
     "plant": StringField(),
     "greenhouseId": EmbeddedDocumentField(Greenhouse, required=True),
-    "sensors": EmbeddedDocumentListField(Sensor, required=True)
+    "sensors": EmbeddedDocumentListField(Sensor, required=True) 
 }
 ```
 
