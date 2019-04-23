@@ -1,72 +1,14 @@
 import cherrypy
 import json
+from rest.user import UserREST
+from rest.add_greenhouse import AddGreenhouseREST
 
+import os
+from mongoengine import connect
 
-class Dispatcher(object):
-    def __init__(self):
-        pass
-
-    def _cp_dispatch(self, vpath):
-        if len(vpath) == 1:
-            # Verify is the uri is correct
-            if vpath[0] != 'user':
-                return vpath
-            vpath.pop(0)
-            cherrypy.request.params['user'] = None
-            cherrypy.request.params['greenhouse'] = False
-            return UserREST()
-
-        if len(vpath) == 2:
-            if vpath[0] != 'user':
-                return vpath
-            vpath.pop(0)
-            cherrypy.request.params['user'] = vpath.pop(0)
-            cherrypy.request.params['greenhouse'] = False
-            return UserREST()
-
-        if len(vpath) == 3:
-            vpath.pop(0)
-            cherrypy.request.params['user'] = vpath.pop(0)
-
-            if vpath[0] == 'greenhouse':
-                cherrypy.request.params['greenhouse'] = True
-            else:
-                cherrypy.request.params['greenhouse'] = False
-
-            vpath.pop(0)
-            return UserREST()
-
-        return vpath
-
-
-class UserREST(object):
-    def __init__(self):
-        pass
-
-    exposed = True
-
-    @cherrypy.tools.json_out()
-    def GET(self, user, greenhouse, **params):
-        cherrypy.response.status = 200
-        return {
-            "status": 200,
-            "data": "GET request on USER service",
-            "user": user,
-            "greenhouse": greenhouse,
-            "params": params
-        }
-
-    @cherrypy.tools.json_in()
-    @cherrypy.tools.json_out()
-    def POST(self, user, greenhouse, **params):
-        cherrypy.response.status = 200
-        return {
-            "status": 200,
-            "data": "POST request on USER service",
-            "user": user,
-            "greenhouse": greenhouse,
-            "params": params
-        }
+connect("users", host="mongodb://" + os.environ.get('MONGO_USERNAME') +
+        ":" + os.environ.get('MONGO_PASSWORD') +
+        "@db:" + str(27017) + '/?authSource=admin')
 
 
 def json_error(status, message, traceback, version):
@@ -75,18 +17,21 @@ def json_error(status, message, traceback, version):
 
 
 if __name__ == '__main__':
-    cherrypy.config.update({
-        'server.socket_host': '0.0.0.0',
-        'server.socket_port': 5001
-    })
-
-    cherrypy.tree.mount(Dispatcher(), '/api/v1', {
+    conf = {
         '/': {
             'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
             'tools.response_headers.on': True,
             'tools.gzip.on': True,
             'error_page.default': json_error
         }
+    }
+
+    cherrypy.config.update({
+        'server.socket_host': '0.0.0.0',
+        'server.socket_port': 5001
     })
+
+    cherrypy.tree.mount(UserREST(), '/api/v1/user', conf)
+    cherrypy.tree.mount(AddGreenhouseREST(), '/api/v1/user/greenhouse', conf)
     cherrypy.engine.start()
     cherrypy.engine.block()
