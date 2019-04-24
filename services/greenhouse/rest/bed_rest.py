@@ -1,4 +1,5 @@
 import cherrypy
+from schemas import Greenhouse, Bed
 
 
 class BedREST(object):
@@ -20,12 +21,34 @@ class BedREST(object):
 
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
-    def POST(self, greenhouse, bed, **params):
+    def POST(self, greenhouse, **params):
+
+        # Find user with the required username
+        try:
+            gh = Greenhouse.objects.get(id=greenhouse)
+        except Exception as e:
+            raise cherrypy.HTTPError(404, str(e))
+
+        bed = Bed(plant=cherrypy.request.json.get('plant'))
+        gh.beds.append(bed)
+
+        try:
+            gh.save()
+        except Exception as e:
+            raise cherrypy.HTTPError(400, str(e))
+
+        beds_data = list(map(lambda bed: {
+            "plant": bed.plant
+        }, gh.beds))
+
         cherrypy.response.status = 200
         return {
             "status": 200,
-            "data": "POST request on BedREST",
-            "greenhouse": greenhouse,
-            "bed": bed,
-            "params": params
+            "data": {
+                "greenhouse": {
+                    "id": str(gh.id),
+                    "location": gh.location,
+                    "beds": beds_data
+                }
+            }
         }
