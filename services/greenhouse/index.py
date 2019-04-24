@@ -1,8 +1,14 @@
 import cherrypy
 import json
-from greenhouse_rest import GreenhouseREST
-from bed_rest import BedREST
-from sensor_rest import SensorREST
+import os
+from mongoengine import connect
+from rest.greenhouse_rest import GreenhouseREST
+from rest.bed_rest import BedREST
+from rest.sensor_rest import SensorREST
+
+connect("greenhouses", host="mongodb://" + os.environ.get('MONGO_USERNAME') +
+        ":" + os.environ.get('MONGO_PASSWORD') +
+        "@db:" + str(27017) + '/?authSource=admin')
 
 
 class Dispatcher(object):
@@ -66,7 +72,7 @@ class Dispatcher(object):
             cherrypy.request.params['sensor'] = None
             return SensorREST()
 
-        # Handle /api/v1/greenhouse/<id>/bed/<id>/sensor/<uuid>
+        # Handle /api/v1/greenhouse/<id>/bed/<id>/sensor/<id>
         if len(vpath) == 6:
             if vpath[0] != 'greenhouse':
                 return vpath

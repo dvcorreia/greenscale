@@ -1,7 +1,7 @@
 import cherrypy
 from mongoengine import connect
 import os
-from schemas import User, Greenhouse
+from schemas import User
 
 
 class AddGreenhouseREST(object):

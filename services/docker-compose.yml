@@ -9,6 +9,8 @@ services:
       - ./default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - web
+      - user
+      - greenhouse
       - moisture
       - humidity
   # ------ MQTT broker ------
@@ -28,8 +30,9 @@ services:
     build: ./user
     volumes:
       - ./user:/usr/src/app
-    env_file:
-      ./user/db.env
+    environment:
+      - MONGO_USERNAME=root
+      - MONGO_PASSWORD=example
     depends_on:
       - db
     restart: on-failure
@@ -38,8 +41,9 @@ services:
     build: ./greenhouse
     volumes:
       - ./greenhouse:/usr/src/app
-    env_file:
-      ./greenhouse/db.env
+    environment:
+      - MONGO_USERNAME=root
+      - MONGO_PASSWORD=example
     depends_on:
       - db
     restart: on-failure
@@ -56,8 +60,9 @@ services:
     build: ./moisture
     volumes:
       - ./moisture:/usr/src/app
-    env_file:
-      ./moisture/db.env
+    environment:
+      - MONGO_USERNAME=root
+      - MONGO_PASSWORD=example
     depends_on:
       - db-moisture
     restart: on-failure
@@ -73,6 +78,12 @@ services:
     build: ./humidity
     volumes:
       - ./humidity:/usr/src/app
+    environment:
+      - MONGO_USERNAME=root
+      - MONGO_PASSWORD=example
+    depends_on:
+      - db-humidity
+    restart: on-failure
   db-humidity:
     image: mongo
     environment:
