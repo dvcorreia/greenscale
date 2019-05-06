@@ -23,7 +23,7 @@ class BedREST(object):
     @cherrypy.tools.json_out()
     def POST(self, greenhouse, **params):
 
-        # Find user with the required username
+        # Find user greenhouse the required id
         try:
             gh = Greenhouse.objects.get(id=greenhouse)
         except Exception as e:
@@ -38,6 +38,7 @@ class BedREST(object):
             raise cherrypy.HTTPError(400, str(e))
 
         beds_data = list(map(lambda bed: {
+            "uuid": str(bed.uuid),
             "plant": bed.plant
         }, gh.beds))
 
