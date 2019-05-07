@@ -31,11 +31,9 @@ class SensorREST(object):
 
         sensor = Sensor(telemetric=cherrypy.request.json.get('telemetric'))
 
-        # Index the wanted bedßß
+        # Index the wanted bed
         for idx, bedidx in enumerate(gh.beds):
-            print(str(bedidx['uuid']))
             if str(bedidx['uuid']) == bed:
-                print('found')
                 gh.beds[idx].sensors.append(sensor)
 
         try:
