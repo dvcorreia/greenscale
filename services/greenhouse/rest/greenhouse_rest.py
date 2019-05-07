@@ -83,6 +83,48 @@ class GreenhouseREST(object):
             }
         }
 
+    @cherrypy.tools.json_in()
+    @cherrypy.tools.json_out()
+    def PUT(self, **params):
+        # Find greenhouse with the required id
+        try:
+            gh = Greenhouse.objects.get(id=params['id'])
+        except Exception as e:
+            raise cherrypy.HTTPError(404, str(e))
+
+        # Update location
+        if cherrypy.request.json.get('location') is not None:
+            gh.location = cherrypy.request.json.get('location')
+
+        # Update document on DB
+        try:
+            gh.save()
+        except Exception as e:
+            raise cherrypy.HTTPError(404, str(e))
+
+        # Build data
+        beds_data = list(map(lambda bed: {
+            "uuid": str(bed.uuid),
+            "plant": bed.plant,
+            "sensors": list(map(lambda s: {
+                "uuid": str(s.uuid),
+                "telemetric": s.telemetric,
+                "hardwareId": s.hardwareId
+            }, bed.sensors))
+        }, gh.beds))
+
+        cherrypy.response.status = 200
+        return {
+            "status": 200,
+            "data": {
+                "greenhouse": {
+                    "id": str(gh.id),
+                    "location": gh.location,
+                    "beds": beds_data
+                }
+            }
+        }
+
     @cherrypy.tools.json_out()
     def DELETE(self, **params):
         # Find user greenhouse the required id
@@ -96,6 +138,9 @@ class GreenhouseREST(object):
             gh.delete()
         except Exception as e:
             raise cherrypy.HTTPError(500, str(e))
+
+        # TODO:
+        # request the user service to delete the greenhouse entry if only one user has the greenhouse
 
         # Build data
         beds_data = list(map(lambda bed: {
