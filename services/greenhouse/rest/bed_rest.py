@@ -87,3 +87,45 @@ class BedREST(object):
                 }
             }
         }
+
+    @cherrypy.tools.json_out()
+    def DELETE(self, greenhouse, **params):
+        # Find greenhouse with the required id
+        try:
+            gh = Greenhouse.objects.get(id=greenhouse)
+        except Exception as e:
+            raise cherrypy.HTTPError(404, str(e))
+
+        # Index the wanted bed
+        for idx, bedidx in enumerate(gh.beds):
+            if str(bedidx['uuid']) == params['uuid']:
+                gh.beds.pop(idx)
+
+        # Update document on DB
+        try:
+            gh.save()
+        except Exception as e:
+            raise cherrypy.HTTPError(404, str(e))
+
+        # Build data
+        beds_data = list(map(lambda bed: {
+            "uuid": str(bed.uuid),
+            "plant": bed.plant,
+            "sensors": list(map(lambda s: {
+                "uuid": str(s.uuid),
+                "telemetric": s.telemetric,
+                "hardwareId": s.hardwareId
+            }, bed.sensors))
+        }, gh.beds))
+
+        cherrypy.response.status = 200
+        return {
+            "status": 200,
+            "data": {
+                "greenhouse": {
+                    "id": str(gh.id),
+                    "location": gh.location,
+                    "beds": beds_data
+                }
+            }
+        }
