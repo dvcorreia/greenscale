@@ -10,13 +10,34 @@ class GreenhouseREST(object):
     exposed = True
 
     @cherrypy.tools.json_out()
-    def GET(self, greenhouse, **params):
+    def GET(self, **params):
+        # Find user greenhouse the required id
+        try:
+            gh = Greenhouse.objects.get(id=params['id'])
+        except Exception as e:
+            raise cherrypy.HTTPError(404, str(e))
+
+        # Build data
+        beds_data = list(map(lambda bed: {
+            "uuid": str(bed.uuid),
+            "plant": bed.plant,
+            "sensors": list(map(lambda s: {
+                "uuid": str(s.uuid),
+                "telemetric": s.telemetric,
+                "hardwareId": s.hardwareId
+            }, bed.sensors))
+        }, gh.beds))
+
         cherrypy.response.status = 200
         return {
             "status": 200,
-            "data": "GET resquest on GreenhouseREST",
-            "greenhouse": greenhouse,
-            "params": params
+            "data": {
+                "greenhouse": {
+                    "id": str(gh.id),
+                    "location": gh.location,
+                    "beds": beds_data
+                }
+            }
         }
 
     @cherrypy.tools.json_in()
@@ -58,6 +79,43 @@ class GreenhouseREST(object):
                     "id": str(gh.id),
                     "location": gh.location,
                     "beds": gh.beds
+                }
+            }
+        }
+
+    @cherrypy.tools.json_out()
+    def DELETE(self, **params):
+        # Find user greenhouse the required id
+        try:
+            gh = Greenhouse.objects.get(id=params['id'])
+        except Exception as e:
+            raise cherrypy.HTTPError(404, str(e))
+
+        # Delete greenhouse
+        try:
+            gh.delete()
+        except Exception as e:
+            raise cherrypy.HTTPError(500, str(e))
+
+        # Build data
+        beds_data = list(map(lambda bed: {
+            "uuid": str(bed.uuid),
+            "plant": bed.plant,
+            "sensors": list(map(lambda s: {
+                "uuid": str(s.uuid),
+                "telemetric": s.telemetric,
+                "hardwareId": s.hardwareId
+            }, bed.sensors))
+        }, gh.beds))
+
+        cherrypy.response.status = 200
+        return {
+            "status": 200,
+            "data": {
+                "greenhouse": {
+                    "id": str(gh.id),
+                    "location": gh.location,
+                    "beds": beds_data
                 }
             }
         }
