@@ -15,11 +15,13 @@ class Sensor(EmbeddedDocument):
 
 
 class Bed(EmbeddedDocument):
-    uuid = UUIDField(required=True, default=lambda: str(uuid.uuid4()))
+    uuid = UUIDField(required=True, default=lambda: str(
+        uuid.uuid4()), binary=False)
     plant = StringField()
     sensors = ListField(EmbeddedDocumentField('Sensor'))
 
 
 class Greenhouse(Document):
     location = StringField()
+    user = StringField(required=True)
     beds = ListField(EmbeddedDocumentField('Bed'))

@@ -54,10 +54,19 @@ class BedREST(object):
 
         # Update plant type
         if cherrypy.request.json.get('plant') is not None:
+            notfound_bed = True
             # Index the wanted bed
             for idx, bedidx in enumerate(gh.beds):
                 if str(bedidx['uuid']) == params['uuid']:
+                    notfound_bed = False
                     gh.beds[idx].plant = cherrypy.request.json.get('plant')
+        else:
+            raise cherrypy.HTTPError(
+                400, 'No "plant" in body to change info')
+
+        if notfound_bed is True:
+            raise cherrypy.HTTPError(
+                404, 'Bed with the uuid ' + str(params['uuid']) + ' was not found')
 
         # Update document on DB
         try:
@@ -90,6 +99,7 @@ class BedREST(object):
 
     @cherrypy.tools.json_out()
     def DELETE(self, greenhouse, **params):
+        notfound_bed = True
         # Find greenhouse with the required id
         try:
             gh = Greenhouse.objects.get(id=greenhouse)
@@ -99,7 +109,12 @@ class BedREST(object):
         # Index the wanted bed
         for idx, bedidx in enumerate(gh.beds):
             if str(bedidx['uuid']) == params['uuid']:
+                notfound_bed = False
                 gh.beds.pop(idx)
+
+        if notfound_bed is True:
+            raise cherrypy.HTTPError(
+                404, 'Bed with the uuid ' + str(params['uuid']) + ' was not found')
 
         # Update document on DB
         try:

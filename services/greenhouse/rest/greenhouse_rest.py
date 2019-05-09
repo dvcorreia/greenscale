@@ -52,6 +52,7 @@ class GreenhouseREST(object):
         # create greenhouse
         gh = Greenhouse()
         gh.location = cherrypy.request.json.get('location')
+        gh.user = userId
 
         # checks if mongoengine raises an exception like
         try:
@@ -133,14 +134,22 @@ class GreenhouseREST(object):
         except Exception as e:
             raise cherrypy.HTTPError(404, str(e))
 
+        r = requests.delete("http://user:5001/api/v1/user/greenhouse",
+                            params={
+                                "greenhouseId": str(gh.id),
+                                "userId": gh.user
+                            })
+        print(r.status_code)
+        # if r.status_code is not 201:
+        #    gh.delete()
+        #    raise cherrypy.HTTPError(
+        #        r.status_code, "Was not possible to update the user: " + r.reason)
+
         # Delete greenhouse
         try:
             gh.delete()
         except Exception as e:
             raise cherrypy.HTTPError(500, str(e))
-
-        # TODO:
-        # request the user service to delete the greenhouse entry if only one user has the greenhouse
 
         # Build data
         beds_data = list(map(lambda bed: {
