@@ -1,4 +1,5 @@
 import cherrypy
+from schema import Moisture
 
 
 class MoistureREST(object):
@@ -8,22 +9,28 @@ class MoistureREST(object):
     exposed = True
 
     @cherrypy.tools.json_out()
-    def GET(self, moisture, **params):
+    def GET(self, **params):
         cherrypy.response.status = 200
         return {
             "status": 200,
             "data": "GET request on Moisture service",
-            "moisture": moisture,
             "param": params
         }
 
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
-    def POST(self, moisture, **params):
+    def POST(self, **params):
+
+        m = Moisture()
+        m.sensor = cherrypy.request.json.get('sensor')
+        m.value = cherrypy.request.json.get('value')
+
+        try:
+            m.save()
+        except Exception as e:
+            raise cherrypy.HTTPError(400, str(e))
+
         cherrypy.response.status = 200
         return {
-            "status": 200,
-            "data": "POST request on the Moisture service",
-            "moisture": moisture,
-            "param": params
+            "response": "Posted with the id"
         }
