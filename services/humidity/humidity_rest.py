@@ -1,4 +1,5 @@
 import cherrypy
+from schema import Humidity
 
 
 class HumidityREST(object):
@@ -8,22 +9,38 @@ class HumidityREST(object):
     exposed = True
 
     @cherrypy.tools.json_out()
-    def GET(self, humidity, **params):
-        cherrypy.response.status = 200
+    def GET(self, **params):
+        if params['size'] is None:
+            data = Humidity.objects(sensor=params['uuid'])
+        else:
+            try:
+                data = Humidity.objects[:int(params['size'])](
+                    sensor=params['uuid'])
+            except Exception as e:
+                raise cherrypy.HTTPError(400, str(e))
+
         return {
-            "status": 200,
-            "data": "GET request on Moisture service",
-            "humidity": humidity,
-            "param": params
+            "sensorId": params['uuid'],
+            "data": list(map(lambda d: {
+                "v": str(d.value),
+                "d": str(d.date)
+            }, data))
         }
 
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
-    def POST(self, humidity, **params):
+    def POST(self, **params):
+
+        h = Humidity()
+        h.sensor = cherrypy.request.json.get('sensor')
+        h.value = cherrypy.request.json.get('value')
+
+        try:
+            h.save()
+        except Exception as e:
+            raise cherrypy.HTTPError(400, str(e))
+
         cherrypy.response.status = 200
         return {
-            "status": 200,
-            "data": "POST request on the Moisture service",
-            "humidity": humidity,
-            "param": params
+            "response": "Posted with the id"
         }
