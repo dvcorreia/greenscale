@@ -10,11 +10,21 @@ class MoistureREST(object):
 
     @cherrypy.tools.json_out()
     def GET(self, **params):
-        cherrypy.response.status = 200
+        if params['size'] is None:
+            data = Moisture.objects(sensor=params['uuid'])
+        else:
+            try:
+                data = Moisture.objects[:int(params['size'])](
+                    sensor=params['uuid'])
+            except Exception as e:
+                raise cherrypy.HTTPError(400, str(e))
+
         return {
-            "status": 200,
-            "data": "GET request on Moisture service",
-            "param": params
+            "sensorId": params['uuid'],
+            "data": list(map(lambda d: {
+                "v": str(d.value),
+                "d": str(d.date)
+            }, data))
         }
 
     @cherrypy.tools.json_in()

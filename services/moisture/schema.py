@@ -3,7 +3,7 @@ import datetime
 
 
 class Moisture(Document):
-    sensor = UUIDField(required=True)
+    sensor = UUIDField(required=True, binary=False)
     value = DecimalField(required=True)
     date = DateTimeField(default=datetime.datetime.utcnow)
 
