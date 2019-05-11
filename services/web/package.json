@@ -1,39 +1,31 @@
 {
   "name": "web",
-  "version": "0.1",
-  "description": "web interface for greenhouse platform",
-  "main": "index.js",
-  "repository": "https://github.com/dvcorreia/greenhouse",
-  "author": "Diogo Correia (@dvcorreia)",
-  "license": "MIT",
-  "scripts": {
-    "start": "webpack-dev-server --open --compress --mode development",
-    "watch": "webpack --mode development -w",
-    "watch:silent": "webpack --mode development -w --silent",
-    "dev": "webpack --mode development --progress",
-    "build": "webpack --mode production --progress",
-    "build:silent": "webpack --mode production --silent",
-    "clean": "rm -rf public",
-    "clean:all": "yarn clean & rm -rf node_modules"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.4.3",
-    "@babel/core": "^7.4.3",
-    "@babel/plugin-proposal-class-properties": "^7.4.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.4.3",
-    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "@babel/preset-env": "^7.4.3",
-    "@babel/preset-react": "^7.0.0",
-    "babel-loader": "^8.0.5",
-    "html-webpack-plugin": "^3.2.0",
-    "webpack": "^4.29.6",
-    "webpack-cli": "^3.3.0",
-    "webpack-dev-server": "^3.2.1"
-  },
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "@babel/polyfill": "^7.4.3",
-    "core-js": "2",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "react-scripts": "3.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

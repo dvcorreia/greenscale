@@ -24,7 +24,7 @@ services:
   web:
     build: ./web
     volumes:
-      - ./web/public:/usr/share/nginx/html
+      - ./web/build:/usr/share/nginx/html
   # ------ User service ------
   user:
     build: ./user
