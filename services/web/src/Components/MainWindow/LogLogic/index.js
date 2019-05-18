@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Form, Button, FormField, Container, Message, Icon } from 'semantic-ui-react'
 
 
-const LogLogic = ({ handleUser }) => {
+const LogLogic = ({ setUser }) => {
     const [username, setUsername] = useState('')
     const [error, setError] = useState(false)
     const [errorText, setErrorText] = useState('')
@@ -20,7 +20,7 @@ const LogLogic = ({ handleUser }) => {
             })
 
             if (response.ok) {
-                console.log('Success: ' + response.status + ' - ' + response.statusText)
+                console.log('User endpoint (SignIn)[success]: ' + response.status + ' - ' + response.statusText)
                 setError(false)
             } else {
                 throw new Error(response.statusText)
@@ -28,13 +28,12 @@ const LogLogic = ({ handleUser }) => {
 
             let { data } = await response.json()
 
-            handleUser({
+            setUser({
                 id: data.id,
                 username: data.username,
+                greenhouses: data.greenhouses,
                 state: true
             })
-
-            console.log(data)
 
         } catch (e) {
             console.log(e)
@@ -48,7 +47,7 @@ const LogLogic = ({ handleUser }) => {
             const response = await fetch(`/api/v1/user?username=${username}`)
 
             if (response.ok) {
-                console.log('Success: ' + response.status + ' - ' + response.statusText)
+                console.log('User endpoint (LogIn)[success]: ' + response.status + ' - ' + response.statusText)
                 setError(false)
             } else {
                 throw new Error(response.statusText)
@@ -56,13 +55,12 @@ const LogLogic = ({ handleUser }) => {
 
             let { data } = await response.json()
 
-            handleUser({
+            setUser({
                 id: data.id,
                 username: data.username,
+                greenhouses: data.greenhouses,
                 state: true
             })
-
-            console.log(data)
 
         } catch (e) {
             console.log(e)
@@ -84,9 +82,9 @@ const LogLogic = ({ handleUser }) => {
                 </Form.Field>
                 <FormField>
                     <Button.Group>
-                        <Button onClick={SignIn}>SignIn</Button>
-                        <Button.Or />
                         <Button primary onClick={LogIn}>LogIn</Button>
+                        <Button.Or />
+                        <Button onClick={SignIn}>SignIn</Button>
                     </Button.Group>
                 </FormField>
             </Form>

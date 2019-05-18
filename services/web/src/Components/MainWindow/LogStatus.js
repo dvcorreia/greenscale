@@ -1,7 +1,7 @@
 import React from 'react'
 import { Menu, Button, Icon } from 'semantic-ui-react'
 
-const LogStatus = ({ user, handleUser }) => {
+const LogStatus = ({ user }) => {
     return (
         <React.Fragment>
             <Menu.Item >

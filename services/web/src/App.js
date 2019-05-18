@@ -3,17 +3,18 @@ import MainWindow from './Components/MainWindow'
 import { Container } from 'semantic-ui-react'
 
 const App = () => {
-  const [user, handleUser] = React.useState({
+  const [user, setUser] = React.useState({
     id: '',
     username: '',
+    greenhouses: [],
     state: false
   })
 
 
   return (
-    <Container style={{ marginTop: 20 }}>
-      <MainWindow user={user} handleUser={handleUser} />
-    </Container>
+    <div style={{ margin: 15 }}>
+      <MainWindow user={user} setUser={setUser} />
+    </div>
   );
 }
 

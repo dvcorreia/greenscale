@@ -5,7 +5,7 @@ import Main from './Main'
 import LogLogic from './LogLogic'
 
 
-const MainWindow = ({ user, handleUser, ...props }) => {
+const MainWindow = ({ user, setUser, ...props }) => {
     return (
         <div>
             <Menu size='small' attached='top'>
@@ -25,12 +25,12 @@ const MainWindow = ({ user, handleUser, ...props }) => {
                 </Dropdown>
 
                 <Menu.Menu position='right'>
-                    <LogStatus user={user} handleUser={handleUser} />
+                    <LogStatus user={user} setUser={setUser} />
                 </Menu.Menu>
             </Menu>
 
             <Segment attached='bottom'>
-                {user.state ? <Main /> : <LogLogic handleUser={handleUser} />}
+                {user.state ? <Main user={user} /> : <LogLogic setUser={setUser} />}
             </Segment>
         </div>
     )
