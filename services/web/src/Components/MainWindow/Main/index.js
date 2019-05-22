@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Segment, Grid, Divider } from 'semantic-ui-react'
+import { Segment, Grid } from 'semantic-ui-react'
 import ListTree from './ListTree'
+import Graph from './Graphs'
 
 const Main = ({ user, ...props }) => {
     const [greenhouseData, setGreenhouseData] = useState([])
+    const [telemetrics, setTelemetrics] = useState([])
 
     useEffect(() => {
         async function fetchData() {
@@ -22,17 +24,23 @@ const Main = ({ user, ...props }) => {
             setGreenhouseData(data)
             console.log(data)
         })
-    }, [])
+    }, [user.greenhouses])
 
     return (
         <Segment>
             <Grid>
                 <Grid.Row columns={2} relaxed='very'>
-                    <Grid.Column>
-                        {greenhouseData.length === 0 ? <p>No Data</p> : <ListTree />}
+                    <Grid.Column width={5}>
+                        {greenhouseData.length === 0 ?
+                            <p>No Data</p>
+                            : <ListTree
+                                greenhouseData={greenhouseData}
+                                setTelemetrics={setTelemetrics}
+                                telemetrics={telemetrics}
+                            />}
                     </Grid.Column>
-                    <Grid.Column>
-                        <h2>Data Visualization</h2>
+                    <Grid.Column width={11}>
+                        {telemetrics.map((telemetric) => <Graph key={telemetric.uuid} sensor={telemetric} />)}
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

@@ -1,13 +1,22 @@
 import React from 'react'
 import { Menu, Button, Icon } from 'semantic-ui-react'
 
-const LogStatus = ({ user }) => {
+const LogStatus = ({ user, setUser }) => {
+    const logOut = () => {
+        setUser({
+            id: '',
+            username: '',
+            greenhouses: [],
+            state: false
+        })
+    }
+
     return (
         <React.Fragment>
             <Menu.Item >
                 {user.state ?
                     <React.Fragment>
-                        <Button icon labelPosition='left' basic color="green">
+                        <Button icon labelPosition='left' basic color="green" onClick={logOut}>
                             <Icon name='user' color="green" />
                             {user.username}
                         </Button>

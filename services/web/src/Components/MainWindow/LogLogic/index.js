@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Form, Button, FormField, Container, Message, Icon } from 'semantic-ui-react'
+import { Form, Button, FormField, Grid, Message, Icon } from 'semantic-ui-react'
 
 
 const LogLogic = ({ setUser }) => {
@@ -70,29 +70,31 @@ const LogLogic = ({ setUser }) => {
     }
 
     return (
-        <Container textAlign='center' style={{ margin: 'auto', paddingLeft: '25%', paddingRight: '25%' }}>
-            <Message
-                attached
-                header='Welcome to our the greenhouse!'
-                content='Fill out the form below to sign-up or log-in' />
-            <Form className='attached fluid segment'>
-                <Form.Field>
-                    <label>Username</label>
-                    <input placeholder='Username' onChange={(e) => setUsername(e.target.value)} />
-                </Form.Field>
-                <FormField>
-                    <Button.Group>
-                        <Button primary onClick={LogIn}>LogIn</Button>
-                        <Button.Or />
-                        <Button onClick={SignIn}>SignIn</Button>
-                    </Button.Group>
-                </FormField>
-            </Form>
-            {error && <Message attached='bottom' error>
-                <Icon name='database' />
-                {errorText}
-            </Message>}
-        </Container>
+        <Grid centered columns={1}>
+            <Grid.Column width={12} textAlign='center'>
+                <Message
+                    attached
+                    header='Welcome to our the greenhouse!'
+                    content='Fill out the form below to sign-up or log-in' />
+                <Form className='attached fluid segment'>
+                    <Form.Field>
+                        <label>Username</label>
+                        <input placeholder='Username' onChange={(e) => setUsername(e.target.value)} />
+                    </Form.Field>
+                    <FormField>
+                        <Button.Group>
+                            <Button primary onClick={LogIn}>LogIn</Button>
+                            <Button.Or />
+                            <Button onClick={SignIn}>SignIn</Button>
+                        </Button.Group>
+                    </FormField>
+                </Form>
+                {error && <Message attached='bottom' error>
+                    <Icon name='database' />
+                    {errorText}
+                </Message>}
+            </Grid.Column>
+        </Grid>
     )
 }
 
