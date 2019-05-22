@@ -79,7 +79,7 @@ class GreenhouseREST(object):
                 "greenhouse": {
                     "id": str(gh.id),
                     "location": gh.location,
-                    "beds": gh.beds
+                    "beds": []
                 }
             }
         }

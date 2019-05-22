@@ -36,16 +36,6 @@ class SensorREST(object):
         except Exception as e:
             raise cherrypy.HTTPError(400, str(e))
 
-        beds_data = list(map(lambda bed: {
-            "uuid": str(bed.uuid),
-            "plant": bed.plant,
-            "sensors": list(map(lambda s: {
-                "uuid": str(s.uuid),
-                "telemetric": s.telemetric,
-                "hardwareId": s.hardwareId
-            }, bed.sensors))
-        }, gh.beds))
-
         cherrypy.response.status = 200
         return {
             "status": 200,
@@ -53,7 +43,14 @@ class SensorREST(object):
                 "greenhouse": {
                     "id": str(gh.id),
                     "location": gh.location,
-                    "beds": beds_data
+                    "beds": {
+                        "uuid": bed,
+                        "sensor": {
+                            "uuid": sensor.uuid,
+                            "telemetric": sensor.telemetric,
+                            "hardwareId": sensor.hardwareId
+                        }
+                    }
                 }
             }
         }

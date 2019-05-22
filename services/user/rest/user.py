@@ -54,7 +54,8 @@ class UserREST(object):
             "status": 201,
             "data": {
                 "id": str(u.id),
-                "username": u.username
+                "username": u.username,
+                "greenhouses": u.greenhouses
             }
         }
 

@@ -26,11 +26,6 @@ class BedREST(object):
         except Exception as e:
             raise cherrypy.HTTPError(400, str(e))
 
-        beds_data = list(map(lambda bed: {
-            "uuid": str(bed.uuid),
-            "plant": bed.plant
-        }, gh.beds))
-
         cherrypy.response.status = 200
         return {
             "status": 200,
@@ -38,7 +33,11 @@ class BedREST(object):
                 "greenhouse": {
                     "id": str(gh.id),
                     "location": gh.location,
-                    "beds": beds_data
+                    "bed": {
+                        "uuid": bed.uuid,
+                        "plant": bed.plant,
+                        "sensors": []
+                    }
                 }
             }
         }
@@ -60,6 +59,7 @@ class BedREST(object):
                 if str(bedidx['uuid']) == params['uuid']:
                     notfound_bed = False
                     gh.beds[idx].plant = cherrypy.request.json.get('plant')
+                    bed = gh.beds[idx]
         else:
             raise cherrypy.HTTPError(
                 400, 'No "plant" in body to change info')
