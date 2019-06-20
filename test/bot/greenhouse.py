@@ -1,6 +1,7 @@
 import requests
 import json
 from config import Config
+from bed import Bed
 import random
 
 locations = [
@@ -13,7 +14,7 @@ locations = [
 
 
 class Greenhouse(object):
-    def __init__(self, location, usedId):
+    def __init__(self, usedId):
         self.location = random.choice(locations)
         self.userId = usedId
         self.conf = Config()
@@ -32,3 +33,16 @@ class Greenhouse(object):
 
         self.id = greenhouse['id']
         self.beds = greenhouse['beds']
+
+        self.createBeds()
+
+    def createBeds(self):
+        nbeds = random.randint(2, 10)
+
+        for i in range(1, nbeds):
+            self.beds.append(Bed(greenhouseId=self.id))
+            print('created bed ' + str(i) + ' for greenhouse ' + self.id)
+
+    def talk(self):
+        for b in self.beds:
+            b.talk()
