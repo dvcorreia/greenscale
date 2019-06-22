@@ -22,7 +22,6 @@ const Main = ({ user, ...props }) => {
 
         fetchData().then((data) => {
             setGreenhouseData(data)
-            console.log(data)
         })
     }, [user.greenhouses])
 

@@ -1,0 +1,39 @@
+.graph-container {
+    display: flex;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    flex: 1;
+    align-items: center;
+    font-family: arial;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+    display: flex;
+}
+
+.titlebar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 15px;
+}
+
+.spacer {
+    flex: 1;
+}
+
+.chart {
+    height: 250px;
+    width: 100%;
+    background: #99efb0;
+    color: #29994a;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 15px;
+}
