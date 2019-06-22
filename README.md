@@ -2,23 +2,23 @@
 </p>
 
 <div align="center">  
-<p>This IoT platform makes greenhouse monitoring has easy has ever been.
-It provides smart scalability, depending on your needs. The platform provides interfaces through REST and MQTT. 
-The platform also provides the end-user with data visualization and monitoring through a web application.
+<p>This platform makes greenhouse and plant monitoring has easy has ever been.
+It provides smart scalability and interfaces through REST and MQTT. 
+The platform also provides a data visualization and monitoring web application.
 </p>
 </div>
 
 ## Wiki
 
-The documentation can be consulted [here](). There you will find information from first steps to system architecture design choices.
+The [documentation]() can be consulted [here](). There you will find all the information you need to understand and get going with the platform.
 
 ## Context
 
-This platform was developed has the final project for the [Programming for IoT applications]() subject taught at __Politecnico di Torino__. The project took about two months of full daily work. At the starting of the project I only knew [ReactJS](https://reactjs.org/), Javascript and code based projects management skills, so all the technology user in this project was ether researched or learned in the classes.
+This platform was developed has the project for the [Programming for IoT applications]() subject taught at __Politecnico di Torino__. The project took about two months. At the starting of the project I only add knowledge in [ReactJS](https://reactjs.org/), Javascript and code based projects management skills, so all the technology used in this project was either researched or learned in the classes.
 
 ## Status
 
-The project is definitely __not ready for production__. The platform is incomplete and it not will be supported. There are a lot of lose ends that need to be improved and it's too much work for one person alone. Feel free to improve and contribute to the project, but take in account that this platform is public for learning purposes.
+The project is definitely __not ready for production__. The platform is incomplete and will not be supported. There are a lot of lose ends that need to be improved and it's too much work for one person alone. Feel free to improve and contribute to the project, but take in consideration that this platform is public for learning purposes.
 
 ## License
 
