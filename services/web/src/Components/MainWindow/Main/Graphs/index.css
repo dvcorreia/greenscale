@@ -31,10 +31,13 @@
 .chart {
     height: 250px;
     width: 100%;
-    background: #66cc81;
-    color: white;
+    background: white;
+    color: black;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
+    border-style: solid;
+    border-color: #b6b6b6;
+    border-width: 1px;
 }

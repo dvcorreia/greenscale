@@ -11,8 +11,8 @@ services:
       - web
       - user
       - greenhouse
-      - moisture
-      - humidity
+      - moisture-rest
+      - humidity-rest
   # ------ MQTT broker ------
   broker:
     image: emitter/server
@@ -56,10 +56,20 @@ services:
     ports:
       - "27017:27017"
   # ------ Moisture service ------
-  moisture:
-    build: ./moisture
+  moisture-rest:
+    build: ./moisture-rest
     volumes:
-      - ./moisture:/usr/src/app
+      - ./moisture-rest:/usr/src/app
+    environment:
+      - MONGO_USERNAME=root
+      - MONGO_PASSWORD=example
+    depends_on:
+      - db-moisture
+    restart: on-failure
+  moisture-mqtt:
+    build: ./moisture-mqtt
+    volumes:
+      - ./moisture-mqtt:/usr/src/app
     environment:
       - MONGO_USERNAME=root
       - MONGO_PASSWORD=example
@@ -74,10 +84,10 @@ services:
     ports:
       - "27018:27017"
   # ------ Humidity service ------
-  humidity:
-    build: ./humidity
+  humidity-rest:
+    build: ./humidity-rest
     volumes:
-      - ./humidity:/usr/src/app
+      - ./humidity-rest:/usr/src/app
     environment:
       - MONGO_USERNAME=root
       - MONGO_PASSWORD=example

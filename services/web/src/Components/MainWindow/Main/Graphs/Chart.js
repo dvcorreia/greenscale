@@ -10,7 +10,8 @@ class Chart extends React.Component {
         const {
             parentWidth,
             parentHeight,
-            data
+            data,
+            telemetric
         } = this.props
 
         const margin = {
@@ -18,6 +19,17 @@ class Chart extends React.Component {
             bottom: 40,
             left: 0,
             right: 0
+        }
+
+        const iconSensorType = (type) => {
+            switch (type) {
+                case 'moisture':
+                    return '#0355f9'
+                case 'humidity':
+                    return '#0355f9'
+                default:
+                    return 'black'
+            }
         }
 
         const width = parentWidth - margin.left - margin.right
@@ -41,40 +53,10 @@ class Chart extends React.Component {
                 <svg ref={s => (this.svg = s)} width={width} height={parentHeight}>
                     <LinearGradient
                         id='fill'
-                        from='white'
+                        from={iconSensorType(telemetric)}
                         to='white'
-                        fromOpacity={0.3}
+                        fromOpacity={0.9}
                         toOpacity={0}
-                    />
-                    <AxisBottom
-                        data={data}
-                        scale={xScale}
-                        top={height}
-                        numTicks={10}
-                        stroke="white"
-                        tickStroke="white"
-                        tickLabelProps={() => ({
-                            fill: 'white',
-                            textAnchor: 'middle',
-                            fontSize: 12,
-                            fontFamily: 'Arial',
-                        })}
-                    />
-                    <AxisLeft
-                        data={data}
-                        scale={yScale}
-                        top={margin.top}
-                        left={0}
-                        hideZero
-                        stroke="transparent"
-                        tickStroke="white"
-                        tickLabelProps={() => ({
-                            fill: 'white',
-                            textAnchor: 'middle',
-                            fontSize: 12,
-                            fontFamily: 'Arial',
-                            dx: '1.5em'
-                        })}
                     />
                     <AreaClosed
                         data={data}
@@ -88,7 +70,38 @@ class Chart extends React.Component {
                         data={data}
                         x={data => xScale(x(data))}
                         y={data => yScale(y(data))}
-                        stroke={'white'}
+                        stroke={iconSensorType(telemetric)}
+                        strokeWidth={2}
+                    />
+                    <AxisBottom
+                        data={data}
+                        scale={xScale}
+                        top={height}
+                        numTicks={10}
+                        stroke="black"
+                        tickStroke="black"
+                        tickLabelProps={() => ({
+                            fill: 'black',
+                            textAnchor: 'middle',
+                            fontSize: 12,
+                            fontFamily: 'Arial',
+                        })}
+                    />
+                    <AxisLeft
+                        data={data}
+                        scale={yScale}
+                        top={margin.top}
+                        left={0}
+                        hideZero
+                        stroke="transparent"
+                        tickStroke="black"
+                        tickLabelProps={() => ({
+                            fill: 'black',
+                            textAnchor: 'middle',
+                            fontSize: 12,
+                            fontFamily: 'Arial',
+                            dx: '1.5em'
+                        })}
                     />
                 </svg>
             </div>
