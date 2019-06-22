@@ -1,2 +1,2 @@
-paho-mqtt
+emitter-io
 mongoengine
