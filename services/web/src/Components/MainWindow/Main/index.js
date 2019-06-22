@@ -39,7 +39,13 @@ const Main = ({ user, ...props }) => {
                             />}
                     </Grid.Column>
                     <Grid.Column width={11}>
-                        {telemetrics.map((telemetric) => <Graph key={telemetric.uuid} sensor={telemetric} />)}
+                        {telemetrics.map((telemetric) =>
+                            <Graph
+                                key={telemetric.uuid}
+                                sensor={telemetric}
+                                telemetrics={telemetrics}
+                                setTelemetrics={setTelemetrics}
+                            />)}
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

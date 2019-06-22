@@ -1,8 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { List } from 'semantic-ui-react'
 
 const SensorTree = ({ sensor, setTelemetrics, telemetrics }) => {
-    const [selected, setSelected] = useState(telemetrics.filter(s => s.uuid === sensor.uuid).length !== 0 ? true : false)
+    const [selected, setSelected] = useState(false)
+
+    useEffect(() => {
+        telemetrics.filter(s => s.uuid === sensor.uuid).length !== 0 ? setSelected(true) : setSelected(false)
+    })
 
     const handleOnClick = () => {
         selected ?

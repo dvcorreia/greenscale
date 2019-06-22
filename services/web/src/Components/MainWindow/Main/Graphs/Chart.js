@@ -88,7 +88,7 @@ class Chart extends React.Component {
                         data={data}
                         x={data => xScale(x(data))}
                         y={data => yScale(y(data))}
-                        stroke={'#ffffff'}
+                        stroke={'white'}
                     />
                 </svg>
             </div>
