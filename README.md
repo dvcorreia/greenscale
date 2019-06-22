@@ -8,17 +8,17 @@ The platform also provides a data visualization and monitoring web application.
 </p>
 </div>
 
-## Wiki
-
-The [documentation]() can be consulted [here](). There you will find all the information you need to understand and get going with the platform.
-
 ## Context
 
-This platform was developed has the project for the [Programming for IoT applications]() subject taught at __Politecnico di Torino__. The project took about two months. At the starting of the project I only add knowledge in [ReactJS](https://reactjs.org/), Javascript and code based projects management skills, so all the technology used in this project was either researched or learned in the classes.
+This platform was developed has the project for the [Programming for IoT applications](https://didattica.polito.it/pls/portal30/gap.pkg_guide.viewGap?p_cod_ins=03QWRQW&p_a_acc=2019&p_header=S&p_lang=EN) subject taught at __Politecnico di Torino__. The project took about two months. At the starting of the project I only add knowledge in [ReactJS](https://reactjs.org/), Javascript and code based projects management skills, so all the technology used in this project was either researched or learned in the classes.
 
 ## Status
 
 The project is definitely __not ready for production__. The platform is incomplete and will not be supported. There are a lot of lose ends that need to be improved and it's too much work for one person alone. Feel free to improve and contribute to the project, but take in consideration that this platform is public for learning purposes.
+
+## Wiki
+
+The [documentation](https://github.com/dvcorreia/greenscale/blob/master/docs/index.md) can be consulted [here](https://github.com/dvcorreia/greenscale/blob/master/docs/index.md). There, you will find all the information you need to understand and get going with the platform.
 
 ## License
 
