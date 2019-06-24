@@ -1,26 +1,28 @@
 import requests
 import json
-from config import Config
+import os
 from greenhouse import Greenhouse
 import random
 
 names = [
-    'Diogo',
-    'Joao',
-    'Alfredo',
-    'Joana',
-    'Romeu',
+    'allessandra',
+    'alice',
+    'arianna',
+    'patrizio',
+    'massimo',
+    'donatello',
+    'stefano',
+    'gian'
 ]
 
 
 class Bot(object):
-    def __init__(self):
-        # Configuration object
-        self.conf = Config()
+    def __init__(self, unicity=False):
         self.username = random.choice(
             names) + str(random.randint(1, 999))   # Generate random name
         self.id = ''
         self.greenhouses = []
+        self.unicity = unicity
 
         # Create user
         self.createUser()
@@ -28,7 +30,7 @@ class Bot(object):
 
     def createUser(self):
         try:
-            r = requests.post(self.conf.uri + "/api/v1/user",
+            r = requests.post(os.environ['URI'] + "/api/v1/user",
                               headers={'Content-type': 'application/json',
                                        'Accept': 'application/json'},
                               json={"username": self.username})
@@ -42,10 +44,13 @@ class Bot(object):
         self.greenhouses = user['greenhouses']
 
     def createGreenhouses(self):
-        ngreenhouses = random.randint(1, 10)
+        if self.unicity:
+            ngreenhouses = 2
+        else:
+            ngreenhouses = random.randint(1, 10)
 
         for i in range(1, ngreenhouses):
-            self.greenhouses.append(Greenhouse(self.id))
+            self.greenhouses.append(Greenhouse(self.id, unicity=self.unicity))
             print('created greenhouse ' + str(i) +
                   ' for user ' + self.username)
 

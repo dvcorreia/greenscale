@@ -1,9 +1,10 @@
 import requests
 import json
-from config import Config
+import os
 import random
 import numpy as np
 import threading
+import os
 
 sensors = [
     'moisture',
@@ -12,15 +13,20 @@ sensors = [
 
 
 class Sensor(object):
-    def __init__(self, greenhouseId, bedUuid):
+    def __init__(self, greenhouseId, bedUuid, unicity=False):
         self.greenhouseId = greenhouseId
+
+        if unicity:
+            self.telemetric = os.environ['TELEMETRIC']
+        else:
+            self.telemetric = random.choice(sensors)
+
         self.bedUuid = bedUuid
-        self.telemetric = random.choice(sensors)
-        self.conf = Config()
+        self.unicity = unicity
 
         # Create Sensor
         try:
-            r = requests.post(self.conf.uri + "/api/v1/greenhouse/" + self.greenhouseId + "/bed/" + self.bedUuid + "/sensor",
+            r = requests.post(os.environ['URI'] + "/api/v1/greenhouse/" + self.greenhouseId + "/bed/" + self.bedUuid + "/sensor",
                               headers={'Content-type': 'application/json',
                                        'Accept': 'application/json'},
                               json={"telemetric": self.telemetric})
@@ -36,15 +42,19 @@ class Sensor(object):
     def talk(self):
         # Post dummy data
         try:
-            requests.post(self.conf.uri + "/api/v1/" + self.telemetric,
+            requests.post(os.environ['URI'] + "/api/v1/" + self.telemetric,
                           headers={'Content-type': 'application/json',
                                    'Accept': 'application/json'},
                           json={
                               "sensor": self.uuid,
                               "value": str(np.random.normal(10, 0.7))
-                          })
+            })
         except Exception as e:
             print(e)
 
         print('Sensor ' + self.uuid + ' Posted')
-        threading.Timer(random.randint(5, 50), self.talk).start()
+
+        if self.unicity:
+            threading.Timer(random.randint(1, 5), self.talk).start()
+        else:
+            threading.Timer(random.randint(5, 30), self.talk).start()

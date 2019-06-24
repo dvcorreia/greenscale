@@ -1,6 +1,6 @@
 import requests
 import json
-from config import Config
+import os
 from bed import Bed
 import random
 
@@ -14,14 +14,14 @@ locations = [
 
 
 class Greenhouse(object):
-    def __init__(self, usedId):
+    def __init__(self, usedId, unicity=False):
         self.location = random.choice(locations)
         self.userId = usedId
-        self.conf = Config()
+        self.unicity = unicity
 
         # Create Greenhouse
         try:
-            r = requests.post(self.conf.uri + "/api/v1/greenhouse",
+            r = requests.post(os.environ['URI'] + "/api/v1/greenhouse",
                               headers={'Content-type': 'application/json',
                                        'Accept': 'application/json'},
                               json={"userId": self.userId, "location": self.location})
@@ -37,10 +37,13 @@ class Greenhouse(object):
         self.createBeds()
 
     def createBeds(self):
-        nbeds = random.randint(2, 10)
+        if self.unicity:
+            nbeds = 2
+        else:
+            nbeds = random.randint(2, 10)
 
         for i in range(1, nbeds):
-            self.beds.append(Bed(greenhouseId=self.id))
+            self.beds.append(Bed(greenhouseId=self.id, unicity=self.unicity))
             print('created bed ' + str(i) + ' for greenhouse ' + self.id)
 
     def talk(self):

@@ -1,8 +1,8 @@
 import requests
 import json
-from config import Config
 from sensor import Sensor
 import random
+import os
 
 plants = [
     'onions',
@@ -18,14 +18,14 @@ plants = [
 
 
 class Bed(object):
-    def __init__(self, greenhouseId):
+    def __init__(self, greenhouseId, unicity=False):
         self.plant = random.choice(plants)
         self.greenhouseId = greenhouseId
-        self.conf = Config()
+        self.unicity = unicity
 
         # Create Bed
         try:
-            r = requests.post(self.conf.uri + "/api/v1/greenhouse/" + greenhouseId + "/bed",
+            r = requests.post(os.environ['URI'] + "/api/v1/greenhouse/" + greenhouseId + "/bed",
                               headers={'Content-type': 'application/json',
                                        'Accept': 'application/json'},
                               json={"plant": self.plant})
@@ -41,11 +41,14 @@ class Bed(object):
         self.createSensors()
 
     def createSensors(self):
-        nsensors = random.randint(2, 5)
+        if self.unicity:
+            nsensors = 2
+        else:
+            nsensors = random.randint(2, 5)
 
         for i in range(1, nsensors):
             self.sensors.append(
-                Sensor(greenhouseId=self.greenhouseId, bedUuid=self.uuid))
+                Sensor(greenhouseId=self.greenhouseId, bedUuid=self.uuid, unicity=self.unicity))
             print('created sensor ' + str(i) + ' for bed ' + self.uuid)
 
     def talk(self):
