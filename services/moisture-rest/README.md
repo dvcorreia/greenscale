@@ -1,6 +1,6 @@
-# Moisture Service
+# Moisture REST Service
 
-This service provides an API to the moisture database throught RESTfull and MQTT services
+This service provides an API to the moisture database through RESTfull services
 
 ## Endpoints
 

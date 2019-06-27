@@ -66,17 +66,20 @@ services:
     depends_on:
       - db-moisture
     restart: on-failure
-  #moisture-mqtt:
-  #  build: ./moisture-mqtt
-  #  volumes:
-  #    - ./moisture-mqtt:/usr/src/app
-  #  environment:
-  #    - MONGO_USERNAME=root
-  #    - MONGO_PASSWORD=example
-  #  depends_on:
-  #    - db-moisture
-  #    - broker
-  #  restart: on-failure
+  moisture-mqtt:
+    build: ./moisture-mqtt
+    volumes:
+      - ./moisture-mqtt:/usr/src/app
+    environment:
+      - MONGO_USERNAME=root
+      - MONGO_PASSWORD=example
+      - HOST=broker
+      - PORT=8080
+      - KEY=8hiuiFt1MZ469D0owBlaibkVcERscGyA
+    depends_on:
+      - db-moisture
+      - broker
+    restart: on-failure
   db-moisture:
     image: mongo
     environment:
