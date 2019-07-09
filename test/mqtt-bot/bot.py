@@ -2,6 +2,9 @@ import requests
 import json
 from greenhouse import Greenhouse
 import random
+import sys
+import getopt
+import threading
 import os
 
 names = [
@@ -57,3 +60,62 @@ class Bot(object):
     def talk(self):
         for g in self.greenhouses:
             g.talk()
+
+
+def main():
+    hstr = 'bot.py -s <http://uri:port> -n <numberbots>'
+    unicity = False
+    uri = 'http://localhost:80'
+    nbots = 1
+    telemetric = None
+
+    try:
+        opts, _ = getopt.getopt(sys.argv[1:], "hue:b:t:", [
+            "help", "unicity", "server=", "endpoint=", "telemetric="])
+    except getopt.GetoptError as err:
+        print(str(err))
+        print(hstr)
+        sys.exit(2)
+
+    for opt, arg in opts:
+        if opt in ("-h", "--help"):
+            print(hstr)
+            sys.exit()
+        elif opt in ("-u", "--unicity"):
+            unicity = True
+        elif opt in ("-e", "--endpoint"):
+            uri = arg
+        elif opt in ("-b", "--bots"):
+            nbots = int(arg)
+            print(nbots)
+        elif opt in ("-t", "--telemetric"):
+            telemetric = arg
+        else:
+            assert False, "unhandled option"
+
+    os.environ['URI'] = uri
+    # If unicity is True select the telemetric you want ot test
+    if unicity is True:
+        if telemetric is None:
+            os.environ['TELEMETRIC'] = 'moisture'
+        else:
+            os.environ['TELEMETRIC'] = telemetric
+
+    bots = []
+    # Set unicity to True to generate only one greenhouse, bed and sensor
+    for i in range(0, nbots):
+        bot = Bot(unicity=unicity)
+        bots.append(bot)
+
+    for i in range(0, len(bots)):
+        threading.Timer(0.5, bots[i].talk())
+
+
+if __name__ == '__main__':
+
+    os.environ['CHANNEL_KEY'] = "ea2oE_cLeqzsXNafzhAoIpfewZlx3VeI"
+    os.environ['CHANNEL'] = "sensor/moisture/"
+    os.environ['HOST'] = "localhost"
+    os.environ['PORT'] = "8080"
+
+    main()

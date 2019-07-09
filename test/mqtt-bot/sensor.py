@@ -6,6 +6,7 @@ import threading
 from emitter import Client
 import os
 
+
 sensors = [
     'moisture',
     'humidity'
@@ -57,7 +58,7 @@ class Sensor(object):
         except Exception as e:
             print(e)
 
-        print("Pub sensor" + self.uuid + "data")
+        print("Pub sensor " + self.uuid + "data")
 
         if self.unicity:
             threading.Timer(random.randint(1, 5), self.talk).start()
