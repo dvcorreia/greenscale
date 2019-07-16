@@ -15,11 +15,12 @@ services:
       - humidity-rest
   # ------ MQTT broker ------
   broker:
-    image: emitter/server
+    image: eclipse-mosquitto:latest
     ports:
-      - "8080:8080"
-    env_file:
-      - ./broker/emitter.env
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./broker/mosquitto.conf:/mosquitto/config/mosquitto.conf
   # ------ Web application interface ------
   web:
     build: ./web

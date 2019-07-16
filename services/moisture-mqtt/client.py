@@ -2,15 +2,11 @@ from mqtt import Mqtt
 import os
 
 os.environ['HOST'] = 'localhost'
-os.environ['PORT'] = '8080'
-os.environ['KEY'] = '8hiuiFt1MZ469D0owBlaibkVcERscGyA'
+os.environ['PORT'] = '1883'
 
 if __name__ == '__main__':
 
     client = Mqtt(os.environ['HOST'],
-                  os.environ['PORT'],
-                  os.environ['KEY'])
+                  int(os.environ['PORT']))
 
-    client.keygen('test/2/')
     client.publish('test/1/', "Message test")
-    client.listen()
