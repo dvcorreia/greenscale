@@ -16,6 +16,9 @@ services:
   # ------ MQTT broker ------
   broker:
     image: eclipse-mosquitto:latest
+    expose:
+      - "1883"
+      - "9001"
     ports:
       - "1883:1883"
       - "9001:9001"
@@ -72,15 +75,17 @@ services:
     volumes:
       - ./moisture-mqtt:/usr/src/app
     environment:
+      - PYTHONUNBUFFERED=1
       - MONGO_USERNAME=root
       - MONGO_PASSWORD=example
       - HOST=broker
-      - PORT=8080
-      - KEY=8hiuiFt1MZ469D0owBlaibkVcERscGyA
+      - PORT=1883
     depends_on:
       - db-moisture
       - broker
-    restart: on-failure
+    restart: unless-stopped
+  mosquitto-test:
+    image: eclipse-mosquitto:latest
   db-moisture:
     image: mongo
     environment:
