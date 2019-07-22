@@ -2,10 +2,11 @@ import paho.mqtt.client as mqtt
 from time import sleep
 from schema import Moisture
 import json
+import re
 
 
 class Client(object):
-    def __init__(self, host, port, channel):
+    def __init__(self, host, port, channels):
         self.host = host
         self.port = port
 
@@ -16,7 +17,8 @@ class Client(object):
         self.mqtt.on_message = lambda *_: print(
             "Message received on a non handled channel")
         # Channels callbacks
-        self.mqtt.message_callback_add(channel, self.onMessage)
+        for channel in channels:
+            self.mqtt.message_callback_add(channel, self.onMessage)
 
         sleep(1)
 
@@ -25,8 +27,9 @@ class Client(object):
 
         sleep(1)
 
-        self.mqtt.subscribe(channel)
-        print("Subscribed to channel " + channel)
+        for channel in channels:
+            self.mqtt.subscribe(channel)
+            print("Subscribed to channel " + channel)
 
     def publish(self, channel, message):
         self.mqtt.publish(channel, json.dumps(message))
@@ -56,7 +59,22 @@ class Client(object):
               self.host + " on port " + self.port)
 
     def onMessage(self, client, userdata, message):
-        print(json.loads(str(message.payload.decode("utf-8"))), flush=True)
+        topics = message.topic.split('/')
+
+        # Verify if the channel topic has only telemetric/uuid
+        if len(topics) > 2:
+            return print("Error! " + message.topic +
+                         " channel topic doesn't match the platform standard")
+
+        UUIDv4 = re.compile(
+            r'^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}$', re.IGNORECASE)
+        if not UUIDv4.match(topics[-1]):
+            return print("Error! uuid " + topics[-1] + " is not valid")
+
+        data = json.loads(str(message.payload.decode("utf-8")))
+
+        print(topics)
+        print(message.topic + ' : ' + str(data), flush=True)
 
         #m = Moisture()
         #m.sensor = data['sensor']
