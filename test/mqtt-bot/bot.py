@@ -63,15 +63,23 @@ class Bot(object):
 
 
 def main():
-    hstr = 'bot.py -s <http://uri:port> -n <numberbots>'
+    hstr = '''python bot.py -e <http://uri:port> -b <numberbots>
+        Available options:
+        -h ; --help       : Help
+        -u ; --unicity    : Runs only one bot with one greenhouse, a bed, a plant and sensor
+        -e ; --endpoint   : REST Host and port (default: http://localhost:80)
+        -t ; --telemetric : In case unicity is True lets you chose the sensor telemetric
+        -b ; --bots       : Number of bots (default: 1)
+        -m ; --mqtt       : MQTT configuration file
+    '''
     unicity = False
     uri = 'http://localhost:80'
     nbots = 1
     telemetric = None
 
     try:
-        opts, _ = getopt.getopt(sys.argv[1:], "hue:b:t:", [
-            "help", "unicity", "server=", "endpoint=", "telemetric="])
+        opts, _ = getopt.getopt(sys.argv[1:], "hue:b:t:m:", [
+            "help", "unicity", "server=", "endpoint=", "telemetric=", "mqtt="])
     except getopt.GetoptError as err:
         print(str(err))
         print(hstr)
@@ -87,9 +95,10 @@ def main():
             uri = arg
         elif opt in ("-b", "--bots"):
             nbots = int(arg)
-            print(nbots)
         elif opt in ("-t", "--telemetric"):
             telemetric = arg
+        elif opt in ("-m", "--mqtt"):
+            os.environ['MQTTCONF'] = arg
         else:
             assert False, "unhandled option"
 
@@ -112,10 +121,4 @@ def main():
 
 
 if __name__ == '__main__':
-
-    os.environ['CHANNEL_KEY'] = "ea2oE_cLeqzsXNafzhAoIpfewZlx3VeI"
-    os.environ['CHANNEL'] = "sensor/moisture/"
-    os.environ['HOST'] = "localhost"
-    os.environ['PORT'] = "8080"
-
     main()

@@ -3,7 +3,8 @@ import json
 import random
 import numpy as np
 import threading
-from emitter import Client
+# from emitter import Client
+import paho.mqtt.client as mqtt
 import os
 
 
@@ -40,21 +41,23 @@ class Sensor(object):
         self.uuid = sensor['uuid']
         self.hardwareId = sensor['hardwareId']
 
-        self.broker = Client()
-        self.broker.on_connect = lambda: print("Connected to the broker")
-        self.broker.connect(os.environ['HOST'], int(
-            os.environ['PORT']), False, 30)
+        self.broker = mqtt.Client(self.uuid)
+        self.broker.on_connect = lambda: print(
+            self.uuid + " connected to the broker")
+
+        with open(os.environ['MQTTCONF']) as mqtt_conf_file:
+            self.mqtt_conf = json.load(mqtt_conf_file)
 
     def talk(self):
         # Post dummy data
         try:
-            self.broker.publish(os.environ['CHANNEL_KEY'],
-                                os.environ['CHANNEL'] + self.uuid,
+            self.broker.connect(self.mqtt_conf["host"], self.mqtt_conf["port"])
+            self.broker.publish("sensor/" + self.telemetric + "/" + self.uuid,
                                 json.dumps({
                                     "sensor": self.uuid,
                                     "value": str(np.random.normal(10, 0.7))
-                                }),
-                                {Client.with_at_least_once(), Client.with_ttl(60), Client.without_echo()})
+                                }))
+            self.broker.disconnect()
         except Exception as e:
             print(e)
 
