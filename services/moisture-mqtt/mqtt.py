@@ -62,7 +62,7 @@ class Client(object):
         topics = message.topic.split('/')
 
         # Verify if the channel topic has only telemetric/uuid
-        if len(topics) > 2:
+        if len(topics) > 3:
             return print("Error! " + message.topic +
                          " channel topic doesn't match the platform standard")
 
@@ -73,14 +73,13 @@ class Client(object):
 
         data = json.loads(str(message.payload.decode("utf-8")))
 
-        print(topics)
-        print(message.topic + ' : ' + str(data), flush=True)
+        m = Moisture()
+        m.sensor = data['sensor']
+        m.value = data['value']
 
-        #m = Moisture()
-        #m.sensor = data['sensor']
-        #m.value = data['value']
+        try:
+            m.save()
+        except Exception as e:
+            print("couldn't save received measurement on DB:\n" + str(e))
 
-        # try:
-        #    m.save()
-        # except Exception as e:
-        #    print("couldn't save received measurement on DB:\n" + str(e))
+        print('Message received on ' + message.topic, flush=True)

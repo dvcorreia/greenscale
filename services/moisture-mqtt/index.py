@@ -10,7 +10,7 @@ print("Connected to database!")
 
 if __name__ == '__main__':
 
-    channels = ['test/#', 'moisture/']
+    channels = ['sensor/moisture/#']
 
     print("Creating MQTT client ...")
     client = Client(os.environ['HOST'],
