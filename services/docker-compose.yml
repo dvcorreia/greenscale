@@ -84,8 +84,6 @@ services:
       - db-moisture
       - broker
     restart: unless-stopped
-  mosquitto-test:
-    image: eclipse-mosquitto:latest
   db-moisture:
     image: mongo
     environment:
