@@ -1,8 +1,10 @@
 import paho.mqtt.client as mqtt
 from time import sleep
-from schema import Moisture
+from schema import Telemetric
 import json
 import re
+import os
+import datetime
 
 
 class Client(object):
@@ -10,7 +12,7 @@ class Client(object):
         self.host = host
         self.port = port
 
-        self.mqtt = mqtt.Client("id")
+        self.mqtt = mqtt.Client(str(datetime.datetime.now()))
 
         # Callbacks configuration
         self.mqtt.on_connect = self.onConnect
@@ -73,12 +75,12 @@ class Client(object):
 
         data = json.loads(str(message.payload.decode("utf-8")))
 
-        m = Moisture()
-        m.sensor = data['sensor']
-        m.value = data['value']
+        t = Telemetric()
+        t.sensor = data['sensor']
+        t.value = data['value']
 
         try:
-            m.save()
+            t.save()
         except Exception as e:
             print("couldn't save received measurement on DB:\n" + str(e))
 

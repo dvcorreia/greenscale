@@ -70,11 +70,10 @@ services:
       - db-moisture
     restart: on-failure
   moisture-mqtt:
-    build: ./moisture-mqtt
-    volumes:
-      - ./moisture-mqtt:/usr/src/app
+    build: ./telemetric-mqtt
     environment:
       - PYTHONUNBUFFERED=1
+      - TELEMETRIC=moisture
       - MONGO_USERNAME=root
       - MONGO_PASSWORD=example
       - HOST=broker
@@ -100,6 +99,19 @@ services:
     depends_on:
       - db-humidity
     restart: on-failure
+  humidity-mqtt:
+    build: ./telemetric-mqtt
+    environment:
+      - PYTHONUNBUFFERED=1
+      - TELEMETRIC=humidity
+      - MONGO_USERNAME=root
+      - MONGO_PASSWORD=example
+      - HOST=broker
+      - PORT=1883
+    depends_on:
+      - db-humidity
+      - broker
+    restart: unless-stopped
   db-humidity:
     image: mongo
     environment:
