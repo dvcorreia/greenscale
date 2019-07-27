@@ -1,8 +1,9 @@
 import cherrypy
-from schema import Humidity
+import os
+from schema import Telemetric
 
 
-class HumidityREST(object):
+class TelemetricREST(object):
     def __init__(self):
         pass
 
@@ -10,11 +11,12 @@ class HumidityREST(object):
 
     @cherrypy.tools.json_out()
     def GET(self, **params):
+        data = None
         if params['size'] is None:
-            data = Humidity.objects(sensor=params['uuid'])
+            data = Telemetric.objects(sensor=params['uuid'])
         else:
             try:
-                data = Humidity.objects[:int(params['size'])](
+                data = Telemetric.objects[: int(params['size'])](
                     sensor=params['uuid'])
             except Exception as e:
                 raise cherrypy.HTTPError(400, str(e))
@@ -31,12 +33,12 @@ class HumidityREST(object):
     @cherrypy.tools.json_out()
     def POST(self, **params):
 
-        h = Humidity()
-        h.sensor = cherrypy.request.json.get('sensor')
-        h.value = cherrypy.request.json.get('value')
+        m = Telemetric()
+        m.sensor = cherrypy.request.json.get('sensor')
+        m.value = cherrypy.request.json.get('value')
 
         try:
-            h.save()
+            m.save()
         except Exception as e:
             raise cherrypy.HTTPError(400, str(e))
 

@@ -2,7 +2,7 @@ from mongoengine import Document, UUIDField, DecimalField, DateTimeField
 import datetime
 
 
-class Humidity(Document):
+class Telemetric(Document):
     sensor = UUIDField(required=True, binary=False)
     value = DecimalField(required=True)
     date = DateTimeField(default=datetime.datetime.utcnow)

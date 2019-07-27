@@ -1,13 +1,13 @@
 import cherrypy
 import json
-from moisture_rest import MoistureREST
+from telemetric_rest import TelemetricREST
 
 from mongoengine import connect
 import os
 
-connect("moistures", host="mongodb://" + os.environ.get('MONGO_USERNAME') +
+connect(os.environ["TELEMETRIC"], host="mongodb://" + os.environ.get('MONGO_USERNAME') +
         ":" + os.environ.get('MONGO_PASSWORD') +
-        "@db-moisture:" + str(27017) + '/?authSource=admin')
+        "@db-" + os.environ["TELEMETRIC"] + ":" + str(27017) + '/?authSource=admin')
 
 
 def json_error(status, message, traceback, version):
@@ -30,6 +30,7 @@ if __name__ == '__main__':
         'server.socket_port': 5001
     })
 
-    cherrypy.tree.mount(MoistureREST(), '/api/v1/moisture', conf)
+    cherrypy.tree.mount(TelemetricREST(), '/api/v1/' +
+                        os.environ["TELEMETRIC"], conf)
     cherrypy.engine.start()
     cherrypy.engine.block()

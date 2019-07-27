@@ -61,10 +61,9 @@ services:
       - "27017:27017"
   # ------ Moisture service ------
   moisture-rest:
-    build: ./moisture-rest
-    volumes:
-      - ./moisture-rest:/usr/src/app
+    build: ./telemetric-rest
     environment:
+      - TELEMETRIC=moisture
       - MONGO_USERNAME=root
       - MONGO_PASSWORD=example
     depends_on:
@@ -93,10 +92,9 @@ services:
       - "27018:27017"
   # ------ Humidity service ------
   humidity-rest:
-    build: ./humidity-rest
-    volumes:
-      - ./humidity-rest:/usr/src/app
+    build: ./telemetric-rest
     environment:
+      - TELEMETRIC=humidity
       - MONGO_USERNAME=root
       - MONGO_PASSWORD=example
     depends_on:
