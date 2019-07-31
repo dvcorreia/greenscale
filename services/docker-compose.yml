@@ -40,6 +40,28 @@ services:
     depends_on:
       - db
     restart: on-failure
+  # ------ Search service ------
+  search:
+    build: ./search
+    volumes:
+      - ./search:/usr/src/app
+    environment:
+      - MONGO_USERNAME=root
+      - MONGO_PASSWORD=example
+    depends_on:
+      - db
+    restart: on-failure
+  # ------ Discover service ------
+  discover:
+    build: ./discover
+    volumes:
+      - ./discover:/usr/src/app
+    environment:
+      - MONGO_USERNAME=root
+      - MONGO_PASSWORD=example
+    depends_on:
+      - db
+    restart: on-failure
   # ------ Greenhouse service ------
   greenhouse:
     build: ./greenhouse
