@@ -1,12 +1,12 @@
 # Search REST Service
 
-This service provides an __API__ to search for sensors, beds and greenhouses. The service comunicates with the __greenhouse__ service and to gatther the data and parce it, providing it's services throught a __REST__ API.
+This service provides an __API__ to search for sensors, beds and greenhouses. The service communicates with the __greenhouse__ service and to gather the data and parse it, providing it's services through a __REST__ API.
 
 ## Operation
 
 > At this point, the API only provides the search of __sensors__ providing a `username` and `uuid`. This will be fixed in version `0.1.0`.
 
-The service receives the resquest and sends a request to the __greenhouse__ service, that gives the data asked back. The data is then searched and returned. There is no access to the main database in this service. Depeding on changes in the arquitecture, in the future it might have.
+The service receives the request and sends a request to the __greenhouse__ service, that gives the data asked back. The data is then searched and returned. There is no access to the main database in this service. Depending on changes in the architecture, in the future it might have.
 
 ## Endpoints
 
