@@ -80,8 +80,7 @@ class BedREST(object):
             "plant": bed.plant,
             "sensors": list(map(lambda s: {
                 "uuid": str(s.uuid),
-                "telemetric": s.telemetric,
-                "hardwareId": s.hardwareId
+                "telemetric": s.telemetric
             }, bed.sensors))
         }, gh.beds))
 
@@ -128,8 +127,7 @@ class BedREST(object):
             "plant": bed.plant,
             "sensors": list(map(lambda s: {
                 "uuid": str(s.uuid),
-                "telemetric": s.telemetric,
-                "hardwareId": s.hardwareId
+                "telemetric": s.telemetric
             }, bed.sensors))
         }, gh.beds))
 

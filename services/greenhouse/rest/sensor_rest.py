@@ -47,8 +47,7 @@ class SensorREST(object):
                         "uuid": bed,
                         "sensor": {
                             "uuid": sensor.uuid,
-                            "telemetric": sensor.telemetric,
-                            "hardwareId": sensor.hardwareId
+                            "telemetric": sensor.telemetric
                         }
                     }
                 }
@@ -76,10 +75,6 @@ class SensorREST(object):
                             gh.beds[idx1].sensors[idx2].telemetric = cherrypy.request.json.get(
                                 'telemetric')
 
-                        if cherrypy.request.json.get('hardwareId') is not None:
-                            gh.beds[idx1].sensors[idx2].hardwareId = cherrypy.request.json.get(
-                                'hardwareId')
-
         # Raise errors for not found ids
         if notfound_bed is True:
             raise cherrypy.HTTPError(
@@ -101,8 +96,7 @@ class SensorREST(object):
             "plant": bed.plant,
             "sensors": list(map(lambda s: {
                 "uuid": str(s.uuid),
-                "telemetric": s.telemetric,
-                "hardwareId": s.hardwareId
+                "telemetric": s.telemetric
             }, bed.sensors))
         }, gh.beds))
 
@@ -157,8 +151,7 @@ class SensorREST(object):
             "plant": bed.plant,
             "sensors": list(map(lambda s: {
                 "uuid": str(s.uuid),
-                "telemetric": s.telemetric,
-                "hardwareId": s.hardwareId
+                "telemetric": s.telemetric
             }, bed.sensors))
         }, gh.beds))
 
