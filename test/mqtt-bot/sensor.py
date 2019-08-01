@@ -39,7 +39,6 @@ class Sensor(object):
         sensor = data['data']['greenhouse']['beds']['sensor']
 
         self.uuid = sensor['uuid']
-        self.hardwareId = sensor['hardwareId']
 
         self.broker = mqtt.Client(self.uuid)
         self.broker.on_connect = lambda: print(

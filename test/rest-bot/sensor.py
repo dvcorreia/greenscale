@@ -37,7 +37,6 @@ class Sensor(object):
         sensor = data['data']['greenhouse']['beds']['sensor']
 
         self.uuid = sensor['uuid']
-        self.hardwareId = sensor['hardwareId']
 
     def talk(self):
         # Post dummy data
