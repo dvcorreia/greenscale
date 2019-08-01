@@ -1,9 +1,7 @@
 import cherrypy
-from mongoengine import connect
 import os
 import json
 import requests
-from schemas import Greenhouse
 
 
 class SearchSensorREST(object):

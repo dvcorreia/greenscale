@@ -49,7 +49,7 @@ services:
       - MONGO_USERNAME=root
       - MONGO_PASSWORD=example
     depends_on:
-      - db
+      - greenhouse
     restart: on-failure
   # ------ Discover service ------
   discover:

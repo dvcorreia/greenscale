@@ -1,13 +1,7 @@
 import cherrypy
 import json
-from rest.search_sensor import SearchSensorREST
-
 import os
-from mongoengine import connect
-
-connect("greenhouses", host="mongodb://" + os.environ.get('MONGO_USERNAME') +
-        ":" + os.environ.get('MONGO_PASSWORD') +
-        "@db:" + str(27017) + '/?authSource=admin')
+from rest.search_sensor import SearchSensorREST
 
 
 def json_error(status, message, traceback, version):
