@@ -1,4 +1,5 @@
 import cherrypy
+import requests
 from schemas import Greenhouse, Bed, Sensor
 
 
@@ -21,6 +22,10 @@ class SensorREST(object):
 
         sensor = Sensor(telemetric=cherrypy.request.json.get('telemetric'))
 
+        uuid = cherrypy.request.json.get('uuid')
+        if uuid is not None:
+            sensor.uuid = uuid
+
         # Index the wanted bed
         for idx, bedidx in enumerate(gh.beds):
             if str(bedidx['uuid']) == bed:
@@ -35,6 +40,15 @@ class SensorREST(object):
             gh.save()
         except Exception as e:
             raise cherrypy.HTTPError(400, str(e))
+
+        # Try to delete the sensor from the discover channel
+        if uuid is not None:
+            try:
+                requests.delete("http://discover:5001/api/v1/discover",
+                                params={"uuid": uuid},
+                                headers={'Accept': 'application/json'})
+            except Exception as e:
+                print('Problem removing sensor from discover service: ' + str(e))
 
         cherrypy.response.status = 200
         return {
