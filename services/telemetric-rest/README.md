@@ -10,7 +10,7 @@ This is how it needs to be architectured: each telemetric service needs to have 
 
 ## Endpoints
 
-### `/$telemetric` 
+### `/api/v1/$telemetric` 
 
 `$telemetric` must be substituted with the one specified in the `TELEMETRIC` environment variable. Beyond this point, if we reference `$telemetric`, remember that is the telemetric specified.  
 
@@ -19,7 +19,7 @@ This is how it needs to be architectured: each telemetric service needs to have 
 #### Example
 
 ```bash
-curl -X GET 'http://ip:port/$telemetric?uuid=$uuid&size=$size'
+curl -X GET 'http://ip:port/api/v1/$telemetric?uuid=$uuid&size=$size'
 ```
 
 #### Parameters
@@ -73,7 +73,7 @@ curl -X GET 'http://ip:port/$telemetric?uuid=$uuid&size=$size'
 curl --header "Content-Type: application/json" \
      --request POST \
      --data '{"sensor":"$uuid","value":"$value"}' \
-    http://ip:port/$telemetric
+    http://ip:port/api/v1/$telemetric
 ```
 
 #### Body

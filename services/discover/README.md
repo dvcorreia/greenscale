@@ -20,14 +20,14 @@ The deletion of sensors enrolled in the service is taking care by the `greenhous
 
 ## Endpoints
 
-### `/discover`
+### `/api/v1/discover`
 
 <p align="center"><b>GET Request</b></p>
 
 #### Example
 
 ```bash
-curl -X GET 'http://ip:port/discover?uuid=$uuid&username=$username'
+curl -X GET 'http://ip:port/api/v1/discover?uuid=$uuid&username=$username'
 ```
 
 #### Parameters
@@ -62,7 +62,7 @@ curl -X GET 'http://ip:port/discover?uuid=$uuid&username=$username'
 #### Example
 
 ```bash
-curl -X POST -d "" 'http://ip:port/discover?telemetric=$telemetric'
+curl -X POST -d "" 'http://ip:port/api/v1/discover?telemetric=$telemetric'
 ```
 
 #### Parameters
@@ -96,7 +96,7 @@ curl -X POST -d "" 'http://ip:port/discover?telemetric=$telemetric'
 #### Example
 
 ```bash
-curl -X DELETE 'http://ip:port/discover?uuid=$uuid'
+curl -X DELETE 'http://ip:port/api/v1/discover?uuid=$uuid'
 ```
 
 #### Parameters

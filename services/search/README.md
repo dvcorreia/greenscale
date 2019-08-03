@@ -10,14 +10,14 @@ The service receives the request and sends a request to the __greenhouse__ servi
 
 ## Endpoints
 
-### `/search`
+### `/api/v1/search`
 
 <p align="center"><b>GET Request</b></p>
 
 #### Example
 
 ```bash
-curl -X GET 'http://ip:port/search?uuid=$uuid&username=$username'
+curl -X GET 'http://ip:port/api/v1/search?uuid=$uuid&username=$username'
 ```
 
 #### Parameters
