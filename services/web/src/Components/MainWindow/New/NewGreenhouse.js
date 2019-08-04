@@ -31,6 +31,7 @@ const NewGreenhouse = ({ user, setUser, setMainWindowState }) => {
                 header: "Location can't be empty",
                 content: "Location can't be empty. Please fill with the location of the greenhouse"
             })
+            return setLoading(false)
         } else {
             if (error.value) setError(false)
         }
