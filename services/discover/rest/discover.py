@@ -50,7 +50,8 @@ class DiscoverREST(object):
 
     @cherrypy.tools.json_out()
     def POST(self, **params):
-        s = Sensor(telemetric=params['telemetric'])
+        s = Sensor(telemetric=params['telemetric'],
+                   username=params['username'])
 
         # Try to save the sensor document on DB
         try:
@@ -62,7 +63,7 @@ class DiscoverREST(object):
         return {
             "uuid": str(s.uuid),
             "telemetric": s.telemetric,
-            "user": ""
+            "user": s.username
         }
 
     @cherrypy.tools.json_out()

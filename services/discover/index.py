@@ -1,6 +1,7 @@
 import cherrypy
 import json
 from rest.discover import DiscoverREST
+from rest.discover_all import DiscoverAllREST
 
 import os
 from mongoengine import connect
@@ -31,5 +32,6 @@ if __name__ == '__main__':
     })
 
     cherrypy.tree.mount(DiscoverREST(), '/api/v1/discover', conf)
+    cherrypy.tree.mount(DiscoverAllREST(), '/api/v1/discover/all', conf)
     cherrypy.engine.start()
     cherrypy.engine.block()

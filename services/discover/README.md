@@ -14,7 +14,7 @@ If it was, responds back `200 OK` and the sensor information with the `username`
 
 If the sensor is not in the _discover database_, it is sent a `404 Not found`. This informs the microcontroller that it need to enroll in the __discover__ service.
 
-To enroll in the __discover__ service, the microcontroller has to send a `POST` request to the service containing the telemetric that it will measure. The service will respond back the sensor identification information.
+To enroll in the __discover__ service, the microcontroller has to send a `POST` request to the service containing the telemetric that it will measure and the username. The service will respond back the sensor identification information.
 
 The deletion of sensors enrolled in the service is taking care by the `greenhouse` service when a sensor is added to a user. It will send a `DELETE` request to the service and it will remove it from the _discover database_.
 
@@ -62,12 +62,13 @@ curl -X GET 'http://ip:port/api/v1/discover?uuid=$uuid&username=$username'
 #### Example
 
 ```bash
-curl -X POST -d "" 'http://ip:port/api/v1/discover?telemetric=$telemetric'
+curl -X POST -d "" 'http://ip:port/api/v1/discover?telemetric=$telemetric&username=$username'
 ```
 
 #### Parameters
 
 - `telemetric` : telemetric that will me measured 
+- `username`: username of the user
 
 #### Response
 
@@ -77,7 +78,7 @@ curl -X POST -d "" 'http://ip:port/api/v1/discover?telemetric=$telemetric'
     {
         "uuid": "$uuid",
         "telemetric": "$telemetric",
-        "user": ""
+        "user": "$username"
     }
     ```
 

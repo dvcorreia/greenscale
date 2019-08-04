@@ -11,3 +11,4 @@ class Sensor(Document):
     uuid = UUIDField(required=True, default=lambda: str(
         uuid.uuid4()), binary=False)
     telemetric = StringField(required=True, choices=sensorCatalog)
+    username = StringField(required=True)
