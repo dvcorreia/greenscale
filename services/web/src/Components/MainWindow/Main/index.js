@@ -8,7 +8,7 @@ const Main = ({ user, ...props }) => {
     const [telemetrics, setTelemetrics] = useState([])
 
     useEffect(() => {
-        async function fetchData() {
+        (async () => {
             const response = user.greenhouses.map(async greenhouse => {
                 const response = await fetch(`/api/v1/greenhouse?id=${greenhouse}`)
                 const data = await response.json()
@@ -17,12 +17,8 @@ const Main = ({ user, ...props }) => {
 
             // wait until all promises resolve
             const results = await Promise.all(response)
-            return results
-        }
-
-        fetchData().then((data) => {
-            setGreenhouseData(data)
-        })
+            setGreenhouseData(results)
+        })();
     }, [user.greenhouses])
 
     return (

@@ -6,7 +6,7 @@ const SensorTree = ({ sensor, setTelemetrics, telemetrics }) => {
 
     useEffect(() => {
         telemetrics.filter(s => s.uuid === sensor.uuid).length !== 0 ? setSelected(true) : setSelected(false)
-    })
+    }, [telemetrics, sensor.uuid])
 
     const handleOnClick = () => {
         selected ?
