@@ -67,7 +67,14 @@ class Bot(object):
 
 
 def main():
-    hstr = 'bot.py -s <http://uri:port> -n <numberbots>'
+    hstr = '''python bot.py -e <http://uri:port> -b <numberbots>
+        Available options:
+        -h ; --help       : Help
+        -u ; --unicity    : Runs only one bot with one greenhouse, a bed, a plant and sensor
+        -e ; --endpoint   : REST Host and port (default: http://localhost:80)
+        -t ; --telemetric : In case unicity is True lets you chose the sensor telemetric
+        -b ; --bots       : Number of bots (default: 1)
+    '''
     unicity = False
     uri = 'http://localhost:80'
     nbots = 1

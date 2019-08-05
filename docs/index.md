@@ -3,6 +3,7 @@
 - [Getting Started](#Getting-Started)
 - [System Architecture](#System-Architecture)
 - [Services](#Services)
+- [Test](#Test)
 - [Enhancements](#Enhancements)
 
 # Getting Started
@@ -72,6 +73,10 @@ The platform implements multiple services which are independent. The documentati
 - [telemetric-rest](./../services/telemetric-rest/README.md)
 - [user](./../services/user/README.md)
 - [web](./../services/web/README.md)
+
+# Test
+
+The testing tools and their documentation can be check in the `./test` directory [here](./../test/README.md).
 
 # Enhancements
 
