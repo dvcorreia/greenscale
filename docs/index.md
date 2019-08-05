@@ -79,6 +79,7 @@ The platform if far away of being ready for production. The limited human resour
 
 Some things to add and enhance the platform can be seen listed bellow:
 
+- __the most important thing that needs to be taken care is the security__. Developing the platform, in most of the cases, security was put aside to make the prototyping faster. The low knowledge about web security would mean that learning it could delay the prototype for a few more months. So adding passwords and security is the most important thing to take care;
 - make a better overall API for the services: this means orchestrating better database schemas, smarter APIs and cleaner code (since it is a little "dirty" from the changes overtime during development);
 - change the programming languages of the services needing high performance and speed to more performant ones like [golang](https://golang.org/) or [rust](https://www.rust-lang.org/). This will allow higher throughput with less hardware in services like the telemetrics, were publishing data from millions of sensors needs to be efficient;
 - add support for [WebSockets](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API). This will allow the web application to update in real time the graphs and give the user a better experience;
