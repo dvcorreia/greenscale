@@ -63,7 +63,7 @@ const NewGreenhouse = ({ user, setUser, setMainWindowState }) => {
                 setError({
                     value: true,
                     header: "Error " + content.status.toString(),
-                    content: content.messsage
+                    content: content.message
                 })
             }
         })();

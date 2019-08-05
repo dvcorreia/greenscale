@@ -30,9 +30,9 @@ const New = ({ newType, setMainWindowState, user, setUser }) => {
             case 'greenhouse':
                 return <NewGreenhouse user={user} setUser={setUser} setMainWindowState={setMainWindowState} />
             case 'bed':
-                return <NewBed data={greenhouseData} user={user} setMainWindowState={setMainWindowState} />
+                return <NewBed data={greenhouseData} setMainWindowState={setMainWindowState} />
             case 'sensor':
-                return <NewSensor data={greenhouseData} user={user} setMainWindowState={setMainWindowState} />
+                return <NewSensor data={greenhouseData} username={user.username} setMainWindowState={setMainWindowState} />
             default:
                 return 'Loading ...'
         }

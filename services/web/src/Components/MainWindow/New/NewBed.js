@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Form, Message, Header, Button, Select } from 'semantic-ui-react'
 
-const NewBed = ({ data, user, setMainWindowState }) => {
+const NewBed = ({ data, setMainWindowState }) => {
     const [form, setValues] = useState({
         plant: '',
         greenhouse: ''
@@ -97,7 +97,8 @@ const NewBed = ({ data, user, setMainWindowState }) => {
 
     return (
         <Form onSubmit={onSubmit} loading={loading} error={error.value} success={success}>
-            <Header as='h4'>Please, fill the form to add the new bed</Header>
+            <Header as='h3'>Please, fill the form to add the new bed</Header>
+            <Header as='h4'>Chose the greenhouse to add the new bed</Header>
             <Form.Field
                 control={Select}
                 options={greenhouseOptions}
