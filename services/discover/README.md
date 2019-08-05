@@ -20,43 +20,9 @@ The deletion of sensors enrolled in the service is taking care by the `greenhous
 
 ## Endpoints
 
-### `/api/v1/discover`
-
-<p align="center"><b>GET Request</b></p>
-
-#### Example
-
-```bash
-curl -X GET 'http://ip:port/api/v1/discover?uuid=$uuid&username=$username'
-```
-
-#### Parameters
-
-- `uuid` : sensor identification
-- `username`: username of the user that has the sensor enrolled (multiple users can have the same sensor, this will be fixed in version `0.1.0`)  
-
-#### Response
-
-- On `200 OK`:
-
-    ```json
-    {
-        "uuid": "$uuid",
-        "telemetric": "$telemetric",
-        "user": "username" || ""
-    }
-    ```
-
-- On `404 Not found`:
-
-    ```json
-    {
-        "status": 404,
-        "message": "$moreinformation"
-    }
-    ```
-
-
+- [`/api/v1/discover`](#`/api/v1/discover`)
+- [`/api/v1/discover/all`](#`/api/v1/discover/all`)
+c
 <p align="center"><b>POST Request</b></p>
 
 #### Example
@@ -132,3 +98,50 @@ curl -X DELETE 'http://ip:port/api/v1/discover?uuid=$uuid'
         "message": "$moreinformation"
     }
     ```
+
+
+### `/api/v1/discover/all`
+
+<p align="center"><b>GET Request</b></p>
+
+#### Example
+
+```bash
+curl -X GET 'http://ip:port/api/v1/discover/all?username=$username'
+```
+
+#### Parameters
+
+- `username`: username of the user that has the sensor enrolled
+
+#### Response
+
+- On `200 OK`:
+
+    ```json
+    {
+        "status": 200,
+        "sensors": [
+        {
+            "uuid": "$uuid1",
+            "telemetric": "$telemetric1"
+        },
+        {
+            "uuid": "$uuid2",
+            "telemetric": "$telemetric2"
+        },
+        ...
+        ]
+    }
+    ```
+
+- On `404 Not found`:
+
+    ```json
+    {
+        "status": 404,
+        "message": "$moreinformation"
+    }
+    ```
+
+
