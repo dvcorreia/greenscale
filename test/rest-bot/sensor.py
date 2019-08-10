@@ -54,6 +54,6 @@ class Sensor(object):
         print('Sensor ' + self.uuid + ' Posted')
 
         if self.unicity:
-            threading.Timer(random.randint(1, 5), self.talk).start()
+            threading.Timer(random.randint(1, 2), self.talk).start()
         else:
             threading.Timer(random.randint(5, 30), self.talk).start()
