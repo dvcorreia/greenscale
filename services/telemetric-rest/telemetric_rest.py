@@ -16,8 +16,12 @@ class TelemetricREST(object):
             data = Telemetric.objects(sensor=params['uuid'])
         else:
             try:
-                data = Telemetric.objects[: int(params['size'])](
-                    sensor=params['uuid'])
+                c = Telemetric.objects(sensor=params['uuid']).count()
+                nquery = c - int(params['size'])
+                if nquery < 0:
+                    nquery = 0
+                print(c)
+                data = Telemetric.objects[nquery:](sensor=params['uuid'])
             except Exception as e:
                 raise cherrypy.HTTPError(400, str(e))
 
