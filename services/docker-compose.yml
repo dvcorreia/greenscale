@@ -27,8 +27,6 @@ services:
   # ------ Web application interface ------
   web:
     build: ./web
-    volumes:
-      - ./web/build:/usr/share/nginx/html
   # ------ User service ------
   user:
     build: ./user
