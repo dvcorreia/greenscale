@@ -3,6 +3,8 @@ import './index.css'
 import Chart from './Chart'
 import { Icon } from 'semantic-ui-react'
 
+let reloadFlag
+
 const Graph = ({ sensor, telemetrics, setTelemetrics }) => {
   const [data, setData] = useState([])
 
@@ -22,8 +24,24 @@ const Graph = ({ sensor, telemetrics, setTelemetrics }) => {
     }
   }
 
+  const loadData = () => {
+    setTimeout(() => {
+      if (reloadFlag) {
+        fetchData().then(r => setData(r.data))
+        console.log("loading data!")
+        loadData()
+      }
+    }, 5000);
+  }
+
   useEffect(() => {
+    reloadFlag = true
     fetchData().then(r => setData(r.data))
+    loadData()
+
+    return () => {
+      reloadFlag = false
+    }
   }, [])
 
   return (

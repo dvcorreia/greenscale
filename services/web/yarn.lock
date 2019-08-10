@@ -1341,7 +1341,7 @@
     lodash.unescape "4.0.1"
     semver "5.5.0"
 
-"@vx/axis@^0.0.189":
+"@vx/axis@0.0.189":
   version "0.0.189"
   resolved "https://registry.yarnpkg.com/@vx/axis/-/axis-0.0.189.tgz#001538b002b5bfa12ca9ce2a37fedf89008e7835"
   integrity sha512-8voCWTYLsvlRapWzm4WiedAI8kfj7UbHKGnpAcZrQN1Kgn5QE1ZFM0B7D/dj+SAYlMpAb/2nCgYV+OhdVkhcMg==
@@ -1360,7 +1360,7 @@
   dependencies:
     d3-shape "^1.0.6"
 
-"@vx/gradient@^0.0.189":
+"@vx/gradient@0.0.189":
   version "0.0.189"
   resolved "https://registry.yarnpkg.com/@vx/gradient/-/gradient-0.0.189.tgz#5b53be804cc7205ed6c0d9c4c10608543f105f58"
   integrity sha512-KBfipcEY7JyVyYpVNP66dBryS5bK/8ZiOCKG0I0UtRPmsU3x5uOprJ9zgB1ZbWfLhk3Avtp3Gt4/Zkle9azu4A==
@@ -1368,7 +1368,7 @@
     classnames "^2.2.5"
     prop-types "^15.5.7"
 
-"@vx/grid@^0.0.189":
+"@vx/grid@0.0.189":
   version "0.0.189"
   resolved "https://registry.yarnpkg.com/@vx/grid/-/grid-0.0.189.tgz#9a8ca87b7fc9ee2a1243904648fb55f9cf702ada"
   integrity sha512-kBqp/y6g6GNBmXgNReyYF7/Z7dSEHbHKw/2eelQgbtzE1E8FjTSaQfWdZ2IT5tOePA8hh7REizcjHyWTnAa1fg==
@@ -1392,7 +1392,7 @@
   resolved "https://registry.yarnpkg.com/@vx/point/-/point-0.0.189.tgz#2a52824dd3e7a1e74188c2ee9407aeee2a2a7a10"
   integrity sha512-OZW05k6Kozta1QAP3T5dEFO0OQH8ppf/dnOnF2DnTJQ4W7a+ctLVJQ0kBDbsWG2xB+sOiMjvccfMOZZKb5JnvA==
 
-"@vx/responsive@^0.0.189":
+"@vx/responsive@0.0.189":
   version "0.0.189"
   resolved "https://registry.yarnpkg.com/@vx/responsive/-/responsive-0.0.189.tgz#64257fdf4570e58fe8a9f7a0d9b33febb7f80058"
   integrity sha512-46phRmRMrcRvUgAwOCMkZdqSEyo8SdXdV3Fh1Zsdgrtzqs3Zg8xtd3UX9t0piXw0tJqeZ16JrOQAZbPxUp9jEw==
@@ -1401,14 +1401,14 @@
     prop-types "^15.6.1"
     resize-observer-polyfill "1.5.0"
 
-"@vx/scale@^0.0.189":
+"@vx/scale@0.0.189":
   version "0.0.189"
   resolved "https://registry.yarnpkg.com/@vx/scale/-/scale-0.0.189.tgz#c185a7c36a0f23653358c86c0593159d3e0f8854"
   integrity sha512-GzSv3HNBPjkIGh74jAg4fLCVf5z/EkvDTRi+u5ZxDHCM3jHV4Y13uXX5ozBUQ7URrYcUWOoEFC7L/QBFUp4yPQ==
   dependencies:
     d3-scale "^2.0.0"
 
-"@vx/shape@0.0.189", "@vx/shape@^0.0.189":
+"@vx/shape@0.0.189":
   version "0.0.189"
   resolved "https://registry.yarnpkg.com/@vx/shape/-/shape-0.0.189.tgz#9031fe9fd95dac229b06ff1a67167290981ec6c5"
   integrity sha512-fvI6utOvhUKl9I9lvGUyYwMaTvg5EH2WlI+r3klPFK7GrruKQIaQShXzX/FLhDZD85KscIEBK2UiNLZ7jd2VYw==
