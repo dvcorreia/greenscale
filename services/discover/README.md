@@ -22,7 +22,42 @@ The deletion of sensors enrolled in the service is taking care by the `greenhous
 
 - [`/api/v1/discover`](#`/api/v1/discover`)
 - [`/api/v1/discover/all`](#`/api/v1/discover/all`)
-c
+
+<p align="center"><b>GET Request</b></p>
+
+#### Example
+
+```bash
+curl -X GET 'http://ip:port/api/v1/discover?uuid=$uuid&username=$username'
+```
+
+#### Parameters
+
+- `uuid`: uuid of the sensor
+- `username`: username of the user that has the sensor enrolled
+
+#### Response
+
+- On `200 OK`:
+
+    ```json
+    {
+        "uuid": "$uuid",
+        "telemetric": "$telemetric",
+        "user": "" || "$username"
+    }
+    ```
+
+- On `404 Not found`:
+
+    ```json
+    {
+        "status": 404,
+        "message": "$moreinformation"
+    }
+    ```
+
+
 <p align="center"><b>POST Request</b></p>
 
 #### Example
