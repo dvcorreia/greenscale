@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
+#include <uuid.h>
 
-#include <publisher-rest.h>
 #include <config.h>
 
 // Verification of configuration file
@@ -43,14 +43,14 @@
 // Function initialization
 void connect2Wifi();
 
-PublisherREST pub;
-
 void setup()
 {
   Serial.begin(115200);
   // Connect to Wifi
   connect2Wifi();
   // Grab uuid and username from EEPROM
+  char *uuid = "53696bed-46c0-48c8-95d5-dae94b166c0d";
+  saveUUID(uuid);
   // Send request to discovery service and check for state
   // If enrolled in the platform start gathering data on the selected sensors and send
   // If not enrolled in the platform, send request to enroll
@@ -59,7 +59,6 @@ void setup()
 
 void loop()
 {
-  pub.talk(12);
 }
 
 void connect2Wifi()

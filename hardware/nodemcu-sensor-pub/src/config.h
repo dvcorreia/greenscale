@@ -10,9 +10,9 @@
 #define HUMIDITY true
 
 // Platform host and port
-#define PLATFORM_HOST "http://locahost"
+#define PLATFORM_HOST "http://localhost"
 #define PLATFORM_PORT 80
 
 // MQTT broker host and port
-#define MQTT_HOST "http://locahost"
+#define MQTT_HOST "http://localhost"
 #define MQTT_PORT 1883
