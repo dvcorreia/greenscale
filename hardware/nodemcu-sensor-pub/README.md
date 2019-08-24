@@ -24,3 +24,29 @@ First you need to create a file called `config.h` inside the `./src` directory. 
 #define MQTT_HOST "http://locahost"
 #define MQTT_PORT 1883
 ```
+
+## Roadmap
+
+The nodemcu code is not ready for production. There are a number of features that need to be added in order to make the deployment had easy as possible. The backend server already supports all the needed features, so is a matter or adding then.
+
+### Current state
+
+In the current state the nodemcu is tasked to do the following steps:
+
+- Connect to the Wifi
+- Send measurements to the server
+
+If the nodemcu disconnects from the Wifi, wait 3 seconds and reset the mcu.
+
+### Planned production state
+
+The future, full fledge production ready nodemcu should handle the following steps:
+
+- Connect to Wifi
+- Grab uuid and username from EEPROM
+- Send request to discovery service and check for enrollment state
+- If enrolled in the platform start gathering data on the selected sensors and send
+- If not enrolled in the platform, send request to enroll
+- After that, gather data of sensors and send
+
+If the nodemcu disconnects from the Wifi, wait 3 seconds and reset the mcu.
