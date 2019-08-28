@@ -1,6 +1,6 @@
 // Update to fit your network configuration
-#define STASSID "Republica da Melancia"
-#define STAPSK "estanorouter"
+#define STASSID "correia mobile wifi"
+#define STAPSK "23909788vala"
 
 // Change to your username in the plarform
 #define USER "dvcorreia"

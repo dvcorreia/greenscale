@@ -1,7 +1,8 @@
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
-#include <uuid.h>
 
+#include <telemetric.h>
+#include <publisher-rest.h>
 #include <config.h>
 
 // Verification of configuration file
@@ -38,29 +39,38 @@
 #define HUMIDITY false
 #endif
 
-#define LED_BUILTIN 2
-
 // Function initialization
 void connect2Wifi();
+
+char *uuid = "c10d93bb-e8cc-4fc1-a501-189d6808789c";
+char *endpoint = "http://localhost:80/api/v1/moisture";
+
+// Generate the needed classes
+Telemetric moisture = Telemetric(A0);
+PublisherREST moisturePub = PublisherREST(uuid, endpoint);
 
 void setup()
 {
   Serial.begin(115200);
   // Connect to Wifi
   connect2Wifi();
-  // Grab uuid and username from EEPROM
-  char *uuid = "53696bed-46c0-48c8-95d5-dae94b166c0d";
-  saveUUID(uuid);
-  // Send request to discovery service and check for state
-  // If enrolled in the platform start gathering data on the selected sensors and send
-  // If not enrolled in the platform, send request to enroll
-  // After that gathering data on the selected sensors and send
 }
 
 void loop()
 {
+  if (WiFi.status() == WL_CONNECTED)
+  {
+    uint8_t v = moisture.measure();
+    moisturePub.talk(v);
+  }
+  else
+  {
+    connect2Wifi();
+  }
+  delay(3000);
 }
 
+// Fuction that connects to the wifi
 void connect2Wifi()
 {
   // Connect to the Wifi network

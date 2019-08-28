@@ -34,7 +34,7 @@ The nodemcu code is not ready for production. There are a number of features tha
 In the current state the nodemcu is tasked to do the following steps:
 
 - Connect to the Wifi
-- Send measurements to the server
+- Send measurements to the server by polling
 
 If the nodemcu disconnects from the Wifi, wait 3 seconds and reset the mcu.
 
@@ -47,6 +47,8 @@ The future, full fledge production ready nodemcu should handle the following ste
 - Send request to discovery service and check for enrollment state
 - If enrolled in the platform start gathering data on the selected sensors and send
 - If not enrolled in the platform, send request to enroll
-- After that, gather data of sensors and send
+- After that, gather data of sensors and send with timer interrupts
 
 If the nodemcu disconnects from the Wifi, wait 3 seconds and reset the mcu.
+It is good practice to avoid any float numerical operations, it slows down your code.
+The final version must avoid using the `String` class since it can cause memory leaks.
