@@ -3,8 +3,8 @@
 // Construstor
 PublisherREST::PublisherREST(char *uuid, char *endpoint)
 {
-    PublisherREST::doc["uuid"] = uuid;  // Specify uuid in json document
-    PublisherREST::endpoint = endpoint; // Specify endpoint
+    PublisherREST::doc["sensor"] = uuid; // Specify sensor uuid in json document
+    PublisherREST::endpoint = endpoint;  // Specify endpoint
 }
 
 // Destructor

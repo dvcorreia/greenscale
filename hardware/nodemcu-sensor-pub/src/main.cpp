@@ -42,8 +42,8 @@
 // Function initialization
 void connect2Wifi();
 
-char *uuid = "c10d93bb-e8cc-4fc1-a501-189d6808789c";
-char *endpoint = "http://localhost:80/api/v1/moisture";
+char *uuid = "33af2283-11c3-40c4-9468-2d2e1e1d4660";
+char *endpoint = "http://192.168.1.127/api/v1/moisture";
 
 // Generate the needed classes
 Telemetric moisture = Telemetric(A0);
@@ -67,7 +67,7 @@ void loop()
   {
     connect2Wifi();
   }
-  delay(3000);
+  delay(10000);
 }
 
 // Fuction that connects to the wifi
