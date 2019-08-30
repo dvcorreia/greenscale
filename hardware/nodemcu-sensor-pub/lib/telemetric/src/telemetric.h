@@ -7,8 +7,7 @@ class Telemetric
 {
 
 public:
-    Telemetric(uint8_t pin);
-    ~Telemetric();
+    void config(uint8_t pin);
     uint8_t pin;
     uint8_t measure();
 

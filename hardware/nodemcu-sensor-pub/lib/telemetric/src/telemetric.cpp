@@ -1,14 +1,9 @@
 #include <telemetric.h>
 
-// Construstor
-Telemetric::Telemetric(uint8_t pin)
+void Telemetric::config(uint8_t pin)
 {
     Telemetric::pin = pin;
-}
-
-// Destructor
-Telemetric::~Telemetric()
-{
+    //Serial.printf("\nTelemetric measuring on pin %X", pin);
 }
 
 uint8_t Telemetric::measure()
@@ -19,7 +14,7 @@ uint8_t Telemetric::measure()
         Telemetric::sensorValue += analogRead(Telemetric::pin);
         delay(1);
     }
-    Telemetric::sensorValue = Telemetric::sensorValue / 10.0;
+    Telemetric::sensorValue = Telemetric::sensorValue / 10;
 
     // Adaptative Limits
     if (Telemetric::minValue > Telemetric::sensorValue)
@@ -36,7 +31,6 @@ uint8_t Telemetric::measure()
     if (Telemetric::sensorValue > 100)
         Telemetric::sensorValue = 100;
 
-    delay(30);
-
+    Serial.printf("\nTelemetric measurement: %d", Telemetric::sensorValue);
     return ((uint8_t)Telemetric::sensorValue);
 }

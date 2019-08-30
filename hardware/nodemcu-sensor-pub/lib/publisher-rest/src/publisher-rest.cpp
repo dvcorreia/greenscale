@@ -1,15 +1,11 @@
 #include <publisher-rest.h>
 
-// Construstor
-PublisherREST::PublisherREST(char *uuid, char *endpoint)
+void PublisherREST::begin(char *uuid, char *endpoint)
 {
     PublisherREST::doc["sensor"] = uuid; // Specify sensor uuid in json document
+    Serial.printf("\nPublisher configured with uuid %s", uuid);
     PublisherREST::endpoint = endpoint;  // Specify endpoint
-}
-
-// Destructor
-PublisherREST::~PublisherREST()
-{
+    Serial.printf("\nWill publish on %s", endpoint);
 }
 
 void PublisherREST::talk(uint8_t measurement)
@@ -27,8 +23,5 @@ void PublisherREST::talk(uint8_t measurement)
     http.end();                                         // Close connection
 
     // Print return code and published message
-    Serial.print("Code ");
-    Serial.print(httpCode);
-    Serial.print(" : ");
-    Serial.println(output);
+    Serial.printf("\nCode %d : %s", httpCode, output);
 }

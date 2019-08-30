@@ -11,8 +11,7 @@ class PublisherREST
 {
 
 public:
-    PublisherREST(char *uuid, char *endpoint);
-    ~PublisherREST();
+    void begin(char *uuid, char *endpoint);
     void talk(uint8_t measurement);
 
 private:
