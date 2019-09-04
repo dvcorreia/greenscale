@@ -1,6 +1,6 @@
-# Moisture MQTT Service
+# Telemetric MQTT Service
 
-This service provides an __API__ to the moisture database through and __MQTT__ services.
+This service provides an __API__ to the `db-$telemetric` database through and __MQTT__ services.
 
 The client was implemented using the [paho-mqtt](https://www.eclipse.org/paho/clients/python/docs/) python library. 
 
