@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import NewGreenhouse from './NewGreenhouse'
 import NewBed from './NewBed'
 import NewSensor from './NewSensor'
-import { Button, Container } from 'semantic-ui-react'
+import { Button } from 'semantic-ui-react'
 
 const New = ({ newType, setMainWindowState, user, setUser }) => {
     const [greenhouseData, setGreenhouseData] = useState([])
@@ -40,12 +40,10 @@ const New = ({ newType, setMainWindowState, user, setUser }) => {
 
 
     return (
-        <div>
-            <Container>
-                <Button attached='top' onClick={() => setMainWindowState('main')}>Cancel and Back</Button>
-                <br />
-                {greenhouseData.length === 0 ? 'Loading ...' : typeManager(newType)}
-            </Container>
+        <div style={{ paddingLeft: '10%', paddingRight: '10%' }}>
+            <Button attached='top' onClick={() => setMainWindowState('main')}>Cancel and Back</Button>
+            <br />
+            {greenhouseData.length === 0 ? 'Loading ...' : typeManager(newType)}
         </div>
     )
 }
