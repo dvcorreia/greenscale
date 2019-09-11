@@ -18,10 +18,15 @@ To enroll in the __discover__ service, the microcontroller has to send a `POST` 
 
 The deletion of sensors enrolled in the service is taking care by the `greenhouse` service when a sensor is added to a user. It will send a `DELETE` request to the service and it will remove it from the _discover database_.
 
+In case the `uuid` was generated at the time of the microcontroller software flash you can hit the API on the _/api/v1/discover/enroll_ sending the `username`, `uuid` and `telemetric` as parameters. This will let the service know and update on the state of the sensor. This request can be sent every time the microcontroller is turned on.
+
 ## Endpoints
 
 - [`/api/v1/discover`](#`/api/v1/discover`)
 - [`/api/v1/discover/all`](#`/api/v1/discover/all`)
+- [`/api/v1/discover/enroll`](#`/api/v1/discover/enroll`)
+
+### `/api/v1/discover`
 
 <p align="center"><b>GET Request</b></p>
 
@@ -180,3 +185,39 @@ curl -X GET 'http://ip:port/api/v1/discover/all?username=$username'
     ```
 
 
+### `/api/v1/discover/enroll`
+
+<p align="center"><b>GET Request</b></p>
+
+#### Example
+
+```bash
+curl -X GET 'http://ip:port/api/v1/discover/enroll?uuid=$uuid&username=$username&telemetric=$telemetric'
+```
+
+#### Parameters
+
+- `uuid`: uuid of the sensor
+- `username`: username of the user that has the sensor enrolled
+- `telemetric`: telemetric type of the sensor
+
+#### Response
+
+- On `200 OK`:
+
+    ```json
+    {
+        "uuid": "$uuid",
+        "telemetric": "$telemetric",
+        "user": "" || "$username"
+    }
+    ```
+
+- On `404 Not found`:
+
+    ```json
+    {
+        "status": 404,
+        "message": "$moreinformation"
+    }
+    ```
