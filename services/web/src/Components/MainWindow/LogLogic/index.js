@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Form, Button, FormField, Grid, Message, Icon } from 'semantic-ui-react'
+import { Form, Button, FormField, Grid, Message, Icon, Image } from 'semantic-ui-react'
+import logo from './logo.png'
 
 
 const LogLogic = ({ setUser }) => {
@@ -72,6 +73,7 @@ const LogLogic = ({ setUser }) => {
     return (
         <Grid centered columns={1}>
             <Grid.Column width={12} textAlign='center'>
+                <Image src={logo} size='large' centered />
                 <Message
                     attached
                     header='Welcome to our the greenhouse!'
