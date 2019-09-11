@@ -1,0 +1,141 @@
+version: '3'
+services:
+  # ------ Load balancing and Reverse proxy ------
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - web
+      - user
+      - greenhouse
+      - moisture-rest
+      - humidity-rest
+  # ------ MQTT broker ------
+  broker:
+    image: eclipse-mosquitto:latest
+    expose:
+      - "1883"
+      - "9001"
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./broker/mosquitto.conf:/mosquitto/config/mosquitto.conf
+  # ------ Web application interface ------
+  web:
+    build: ./web
+  # ------ User service ------
+  user:
+    build: ./user
+    volumes:
+      - ./user:/usr/src/app
+    environment:
+      - MONGO_USERNAME=root
+      - MONGO_PASSWORD=example
+    depends_on:
+      - db
+    restart: on-failure
+  # ------ Search service ------
+  search:
+    build: ./search
+    volumes:
+      - ./search:/usr/src/app
+    environment:
+      - MONGO_USERNAME=root
+      - MONGO_PASSWORD=example
+    depends_on:
+      - greenhouse
+    restart: on-failure
+  # ------ Discover service ------
+  discover:
+    build: ./discover
+    volumes:
+      - ./discover:/usr/src/app
+    environment:
+      - MONGO_USERNAME=root
+      - MONGO_PASSWORD=example
+    depends_on:
+      - db
+    restart: on-failure
+  # ------ Greenhouse service ------
+  greenhouse:
+    build: ./greenhouse
+    volumes:
+      - ./greenhouse:/usr/src/app
+    environment:
+      - MONGO_USERNAME=root
+      - MONGO_PASSWORD=example
+    depends_on:
+      - db
+    restart: on-failure
+  # ------ Main DB ------
+  db:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    ports:
+      - "27017"
+  # ------ Moisture service ------
+  moisture-rest:
+    build: ./telemetric-rest
+    environment:
+      - TELEMETRIC=moisture
+      - MONGO_USERNAME=root
+      - MONGO_PASSWORD=example
+    depends_on:
+      - db-moisture
+    restart: on-failure
+  moisture-mqtt:
+    build: ./telemetric-mqtt
+    environment:
+      - PYTHONUNBUFFERED=1
+      - TELEMETRIC=moisture
+      - MONGO_USERNAME=root
+      - MONGO_PASSWORD=example
+      - HOST=broker
+      - PORT=1883
+    depends_on:
+      - db-moisture
+      - broker
+    restart: unless-stopped
+  db-moisture:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    ports:
+      - "27017"
+  # ------ Humidity service ------
+  humidity-rest:
+    build: ./telemetric-rest
+    environment:
+      - TELEMETRIC=humidity
+      - MONGO_USERNAME=root
+      - MONGO_PASSWORD=example
+    depends_on:
+      - db-humidity
+    restart: on-failure
+  humidity-mqtt:
+    build: ./telemetric-mqtt
+    environment:
+      - PYTHONUNBUFFERED=1
+      - TELEMETRIC=humidity
+      - MONGO_USERNAME=root
+      - MONGO_PASSWORD=example
+      - HOST=broker
+      - PORT=1883
+    depends_on:
+      - db-humidity
+      - broker
+    restart: unless-stopped
+  db-humidity:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    ports:
+      - "27017"
