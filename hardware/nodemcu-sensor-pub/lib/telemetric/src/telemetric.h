@@ -10,6 +10,7 @@ public:
     void config(uint8_t pin);
     uint8_t pin;
     uint8_t measure();
+    uint8_t measureFake();
 
 private:
     uint16_t sensorValue = 0;

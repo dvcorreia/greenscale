@@ -3,6 +3,7 @@
 
 #include <telemetric.h>
 #include <publisher-rest.h>
+#include <discover.h>
 #include <config.h>
 
 
@@ -18,20 +19,25 @@
   #define MQTT_HOST "http://locahost"
   #define MQTT_PORT 1883
   #define MOISTURE false
+  #define MOISTURE_UUID ""
   #define HUMIDITY false
+  #define HUMIDITY_UUID ""
   #define DEBUGLEVEL 3
 #endif
 
 // Function initialization
 void connect2Wifi();
 
-char *uuid = "33af2283-11c3-40c4-9468-2d2e1e1d4660";
 char endpoint[80];
+uint8_t v = 0;
+
+// Gerate discover class
+Discover discover = Discover();
 
 // Generate the needed classes
 #if MOISTURE == true
-  Telemetric moisture = Telemetric();
-  PublisherREST moisturePub = PublisherREST();
+Telemetric moisture = Telemetric();
+PublisherREST moisturePub = PublisherREST();
 #endif
 
 void setup(){
@@ -40,20 +46,25 @@ void setup(){
   // Connect to Wifi
   connect2Wifi();
 
+  //Config discover
+  sprintf(endpoint, "http://%s:%i/api/v1/discover/enroll", PLATFORM_HOST, PLATFORM_PORT);
+  discover.begin(endpoint);
+
   #if MOISTURE == true
-    // Grab uuid
-    // Initialize moisture classes
-    moisture.config(A0);
-    sprintf(endpoint, "http://%s:%i/api/v1/moisture", PLATFORM_HOST, PLATFORM_PORT);
-    moisturePub.begin(uuid, endpoint);
+  // Send discover
+  discover.pulse(MOISTURE_UUID, "moisture", USER);
+  // Initialize moisture classes
+  moisture.config(A0);
+  sprintf(endpoint, "http://%s:%i/api/v1/moisture", PLATFORM_HOST, PLATFORM_PORT);
+  moisturePub.begin(MOISTURE_UUID, endpoint);
   #endif
 }
 
 void loop(){
   if (WiFi.status() == WL_CONNECTED){
     #if MOISTURE == true
-        uint8_t v = moisture.measure();
-        moisturePub.talk(v);
+    v = moisture.measureFake();
+    moisturePub.talk(v);
     #endif
   }else{
     connect2Wifi();
