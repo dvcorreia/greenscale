@@ -5,7 +5,7 @@ void PublisherREST::begin(char *uuid, char *endpoint)
     PublisherREST::doc["sensor"] = uuid; // Specify sensor uuid in json document
     Serial.printf("\nPublisher configured with uuid %s", uuid);
     PublisherREST::endpoint = endpoint;  // Specify endpoint
-    Serial.printf("\nWill publish on %s", endpoint);
+    Serial.printf("\nWill publish on %s\n", endpoint);
 }
 
 void PublisherREST::talk(uint8_t measurement)
@@ -23,5 +23,6 @@ void PublisherREST::talk(uint8_t measurement)
     http.end();                                         // Close connection
 
     // Print return code and published message
+    Serial.printf("\nEndpoint: %s", PublisherREST::endpoint);
     Serial.printf("\nCode %d : %s", httpCode, output);
 }

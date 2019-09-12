@@ -6,8 +6,6 @@
 #include <discover.h>
 #include <config.h>
 
-
-
 // Verification of configuration file
 // And placeholders for the inexistence of such
 #ifndef STASSID
@@ -28,7 +26,7 @@
 // Function initialization
 void connect2Wifi();
 
-char endpoint[80];
+char endpoint[128];
 uint8_t v = 0;
 
 // Gerate discover class
@@ -36,8 +34,14 @@ Discover discover = Discover();
 
 // Generate the needed classes
 #if MOISTURE == true
+char endpointMoisture[128];
 Telemetric moisture = Telemetric();
 PublisherREST moisturePub = PublisherREST();
+#endif
+#if HUMIDITY == true
+char endpointHumidity[128];
+Telemetric humidity = Telemetric();
+PublisherREST humidityPub = PublisherREST();
 #endif
 
 void setup(){
@@ -46,18 +50,25 @@ void setup(){
   // Connect to Wifi
   connect2Wifi();
 
-  //Config discover
-  sprintf(endpoint, "http://%s:%i/api/v1/discover/enroll", PLATFORM_HOST, PLATFORM_PORT);
-  discover.begin(endpoint);
-
   #if MOISTURE == true
   // Send discover
-  discover.pulse(MOISTURE_UUID, "moisture", USER);
+  sprintf(endpoint, "http://%s:%i/api/v1/discover/enroll", PLATFORM_HOST, PLATFORM_PORT);
+  discover.pulse(endpoint, MOISTURE_UUID, "moisture", USER);
   // Initialize moisture classes
   moisture.config(A0);
-  sprintf(endpoint, "http://%s:%i/api/v1/moisture", PLATFORM_HOST, PLATFORM_PORT);
-  moisturePub.begin(MOISTURE_UUID, endpoint);
-  #endif
+  sprintf(endpointMoisture, "http://%s:%i/api/v1/moisture", PLATFORM_HOST, PLATFORM_PORT);
+  moisturePub.begin(MOISTURE_UUID, endpointMoisture);
+#endif
+  delay(100);
+  #if HUMIDITY == true
+  // Send discover
+  sprintf(endpoint, "http://%s:%i/api/v1/discover/enroll", PLATFORM_HOST, PLATFORM_PORT);
+  discover.pulse(endpoint, HUMIDITY_UUID, "humidity", USER);
+  // Initialize moisture classes
+  humidity.config(A0);
+  sprintf(endpointHumidity, "http://%s:%i/api/v1/humidity", PLATFORM_HOST, PLATFORM_PORT);
+  humidityPub.begin(HUMIDITY_UUID, endpointHumidity);
+#endif
 }
 
 void loop(){
@@ -65,6 +76,10 @@ void loop(){
     #if MOISTURE == true
     v = moisture.measureFake();
     moisturePub.talk(v);
+    #endif
+    #if HUMIDITY == true
+    v = humidity.measureFake();
+    humidityPub.talk(v);
     #endif
   }else{
     connect2Wifi();

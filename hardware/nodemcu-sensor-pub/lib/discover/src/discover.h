@@ -8,12 +8,11 @@ class Discover
 {
 
 public:
-    void begin(char *endpoint);
-    boolean pulse(char *uuid, char *telemetric, char *username);
+    boolean pulse(char *endpoint, char *uuid, char *telemetric, char *username);
 
 private:
     char *endpoint;
-    char buffer[128];
+    char buffer[140];
 };
 
 #endif
