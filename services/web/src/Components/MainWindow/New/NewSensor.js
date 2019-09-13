@@ -32,7 +32,7 @@ const NewSensor = ({ data, username, setMainWindowState }) => {
 
             setSensorOptions(sensor_parsed)
         })();
-    }, [setSensorOptions])
+    }, [setSensorOptions, username])
 
     const handleSensorChange = (e, { value, name }) => {
         const sensor = sensorOptions.find(s => {
@@ -114,6 +114,7 @@ const NewSensor = ({ data, username, setMainWindowState }) => {
             if (content.status === 200) {
                 setSuccess(true)
             } else {
+                console.log(content.message)
                 setError({
                     value: true,
                     header: "Error " + content.status.toString(),
