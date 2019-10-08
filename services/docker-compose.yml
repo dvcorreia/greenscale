@@ -139,3 +139,22 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=example
     ports:
       - "27019:27017"
+  event-emitter-mqtt:
+    build: ./event-emitter-mqtt
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MONGO_USERNAME=root
+      - MONGO_PASSWORD=example
+      - HOST=broker
+      - PORT=1883
+    depends_on:
+      - db-event
+      - broker
+    restart: unless-stopped
+  db-event:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    ports:
+      - "27020:27017"
