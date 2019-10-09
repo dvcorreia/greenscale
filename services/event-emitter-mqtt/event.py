@@ -70,7 +70,7 @@ class eventClient(object):
 
         UUIDv4 = re.compile(
             r'^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}$', re.IGNORECASE)
-        if not UUIDv4.match(topics[-1]):
+        if not UUIDv4.match(topics[1]):
             return print("Error! uuid " + topics[-1] + " is not valid")
 
         data = json.loads(str(message.payload.decode("utf-8")))
@@ -90,25 +90,42 @@ class eventClient(object):
             event = Event()
             event.event_type = data['event-type']
             event.target = data['target']
+            event.logic = data['logic']
+            event.logic_value = data['logic-value']
             sensor.events.append(event)
 
             try:
-                gh.save()
+                sensor.save()
             except Exception as e:
-                print("Couldn't save to event db: " + str(e))
+                return print("Couldn't save to event db: " + str(e))
+
+            return print("Event saved to db")
 
         elif topics[-1] == "delete":
-            pass
+            try:
+                sensor = Sensor.objects.get(sensor=topics[1])
+            except Exception as e:
+                sensor = None
+
+            if sensor is None:
+                # Create sensor in event db and add event
+                return print("Sensor not found")
+
+            notfound = True
+            # Index the wanted event
+            for idx, eventidx in enumerate(sensor.events):
+                if str(eventidx['uuid']) == data['uuid']:
+                    notfound = False
+                    sensor.events.pop(idx)
+
+            if notfound is True:
+                return print("Event couldn't be deleted, not found")
+
+            try:
+                sensor.save()
+            except Exception as e:
+                return print("Error saving deletion to db" + str(e))
+
+            return print("Event " + data['uuid'] + " deleted")
         else:
-            pass
-
-        t = Telemetric()
-        t.sensor = data['sensor']
-        t.value = data['value']
-
-        try:
-            t.save()
-        except Exception as e:
-            print("couldn't save received measurement on DB:\n" + str(e))
-
-        print('Message received on ' + message.topic, flush=True)
+            return print("Channel " + message.topic + " not handled")

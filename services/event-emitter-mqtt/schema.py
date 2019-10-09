@@ -1,8 +1,9 @@
-from mongoengine import Document, UUIDField, DecimalField, DateTimeField, EmbeddedDocumentListField, EmbeddedDocument, StringField
+from mongoengine import Document, UUIDField, DecimalField, DateTimeField, EmbeddedDocumentListField, EmbeddedDocument, StringField, DecimalField
 import datetime
 import uuid
 
 eventTypeCatalog = ('actuator', 'warning')
+eventVerificationCatalog = ('gt', 'lt', 'eq')
 
 
 class Event(EmbeddedDocument):
@@ -11,6 +12,8 @@ class Event(EmbeddedDocument):
     event_type = StringField(required=True, choices=eventTypeCatalog)
     target = UUIDField(binary=False)
     last_occurred = DateTimeField(default=datetime.datetime.utcnow)
+    logic = StringField(required=True, choices=eventVerificationCatalog)
+    logic_value = DecimalField(precision=2, rounding='ROUND_HALF_UP')
 
 
 class Sensor(Document):
