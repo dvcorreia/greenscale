@@ -1,6 +1,6 @@
 import paho.mqtt.client as mqtt
 from time import sleep
-from schema import Sensor, Event
+from schema import Sensor, Event, eventTypeCatalog, eventVerificationCatalog
 import json
 import re
 import os
@@ -13,6 +13,9 @@ class eventClient(object):
         self.port = port
 
         self.mqtt = mqtt.Client(str(datetime.datetime.now()))
+
+        self.UUIDv4 = re.compile(
+            r'^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}$', re.IGNORECASE)
 
         # Callbacks configuration
         self.mqtt.on_connect = self.onConnect
@@ -68,12 +71,18 @@ class eventClient(object):
             return print("Error! " + message.topic +
                          " channel topic doesn't match the platform standard")
 
-        UUIDv4 = re.compile(
-            r'^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}$', re.IGNORECASE)
-        if not UUIDv4.match(topics[1]):
-            return print("Error! uuid " + topics[-1] + " is not valid")
-
         data = json.loads(str(message.payload.decode("utf-8")))
+
+        if topics[0] == "sensor":
+            self.onMessageTelemetricProbe(message, topics, data)
+        elif topics[0] == "event":
+            self.onMessageEvent(message, topics, data)
+        else:
+            pass
+
+    def onMessageEvent(self, message, topics, data):
+        if not self.UUIDv4.match(topics[1]):
+            return print("Error! uuid " + topics[1] + " is not valid")
 
         if topics[-1] == "add":
             # Try grab the sensor from the DB
@@ -129,3 +138,47 @@ class eventClient(object):
             return print("Event " + data['uuid'] + " deleted")
         else:
             return print("Channel " + message.topic + " not handled")
+
+    def onMessageTelemetricProbe(self, message, topics, data):
+        if not self.UUIDv4.match(topics[-1]):
+            return print("Error! uuid " + topics[-1] + " is not valid")
+        # Try to check if the sensor has an event associated
+        try:
+            sensor = Sensor.objects.get(sensor=topics[-1])
+        except Exception as e:
+            print("Couldn retrieve from db: " + str(e))
+            return
+
+        for idx, eventidx in enumerate(sensor.events):
+            # Process events
+            self.process_event(value=float(data['value']),
+                               event_type=eventidx['event_type'],
+                               target=eventidx['target'],
+                               logic=eventidx['logic'],
+                               logic_value=eventidx['logic_value'])
+            sensor.events[idx].last_occurred = datetime.datetime.utcnow
+
+        try:
+            sensor.save()
+        except Exception as e:
+            return print("Couldn't update db: " + str(e))
+
+    def process_event(self, value, event_type, target, logic, logic_value):
+        # Process logic
+        logicFlag = {
+            eventVerificationCatalog[0]: value > logic_value,
+            eventVerificationCatalog[1]: value >= logic_value,
+            eventVerificationCatalog[2]: value < logic_value,
+            eventVerificationCatalog[3]: value <= logic_value,
+            eventVerificationCatalog[4]: value == logic_value
+        }.get(logic, False)
+
+        if logicFlag is False:
+            return
+
+        # Verify if target uuid is valid
+        if not self.UUIDv4.match(str(target)):
+            return
+
+        # publish on the event type
+        return self.publish(event_type + "/" + str(target), {"value": "ON"})

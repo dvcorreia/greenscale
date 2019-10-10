@@ -141,6 +141,8 @@ services:
       - "27019:27017"
   event-emitter-mqtt:
     build: ./event-emitter-mqtt
+    volumes:
+      - ./event-emitter-mqtt:/usr/src/app
     environment:
       - PYTHONUNBUFFERED=1
       - MONGO_USERNAME=root

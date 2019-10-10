@@ -3,7 +3,7 @@ import datetime
 import uuid
 
 eventTypeCatalog = ('actuator', 'warning')
-eventVerificationCatalog = ('gt', 'lt', 'eq')
+eventVerificationCatalog = ('gt', 'gte', 'lt', 'lte', 'eq')
 
 
 class Event(EmbeddedDocument):

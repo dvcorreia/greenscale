@@ -1,4 +1,3 @@
-#from telemetric_probe import telemetricProbeClient
 from event import eventClient
 from mongoengine import connect
 import os
@@ -10,18 +9,13 @@ connect("events", host="mongodb://" + os.environ.get('MONGO_USERNAME') +
 print("Connected to database!")
 
 if __name__ == '__main__':
-
-    channelSensor = ['sensor/#']
-    channelEvent = ['event/#']
+    channelEvent = ['event/#', 'sensor/#']
 
     print("Creating MQTT client ...")
-    # telemetricProbleClient = telemetricProbeClient(os.environ['HOST'],
-    #                                               int(os.environ['PORT']),
-    #                                               channelSensor)
+
     eventClient = eventClient(os.environ['HOST'],
                               int(os.environ['PORT']),
                               channelEvent)
 
     print("Listening to channels!")
-    # telemetricProbleClient.listen(forever=True)
     eventClient.listen(forever=False)
