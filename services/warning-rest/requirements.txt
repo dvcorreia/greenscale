@@ -1,0 +1,3 @@
+cherrypy
+mongoengine
+mongoengine_goodjson
