@@ -7,14 +7,14 @@ The client was implemented using the [paho-mqtt](https://www.eclipse.org/paho/cl
 
 ### Add events
 
-Events can be _added_ through MQTT on the channel `actuator/add/$sensor_uuid` passing down json as the following schema:
+Events can be _added_ through MQTT on the channel `event/add/$sensor_uuid` passing down json as the following schema:
 
 ```json
 {
-    "event_type": "warning || actuator",
+    "event-type": "warning || actuator",
     "target": "target_uuid",
     "logic": "(gt, gte, lt, lte, eq)",
-    "logic_value": $decimal_value
+    "logic-value": $decimal_value
 }
 ```
 The `logic` entry follow has:
@@ -27,9 +27,15 @@ The `logic` entry follow has:
 
 The `logic_value` decimal number will only retain 2 decimal places in the _database_.
 
+CMD Line test example:
+
+```bash
+mosquitto_pub -h localhost -t event/add/79d845b0-3d42-4907-98da-7faa3ae2a82c -m "{\"event-type\": \"warning\",\"target\":\"f2e274b0-1856-45b2-b00e-3cba6ce2ddff\",\"logic\":\"lt\",\"logic-value\":50.1}"
+```
+
 ### Delete
 
-To delete events, it can be done through the channel `actuator/delete/$sensor_uuid` passing down the json data of the event `uuid` to be deleted as:
+To delete events, it can be done through the channel `event/delete/$sensor_uuid` passing down the json data of the event `uuid` to be deleted as:
 
 ```json
 {

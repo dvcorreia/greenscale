@@ -81,13 +81,13 @@ class eventClient(object):
             pass
 
     def onMessageEvent(self, message, topics, data):
-        if not self.UUIDv4.match(topics[1]):
-            return print("Error! uuid " + topics[1] + " is not valid")
+        if not self.UUIDv4.match(topics[-1]):
+            return print("Error! uuid " + topics[-1] + " is not valid")
 
-        if topics[-1] == "add":
+        if topics[1] == "add":
             # Try grab the sensor from the DB
             try:
-                sensor = Sensor.objects.get(sensor=topics[1])
+                sensor = Sensor.objects.get(sensor=topics[-1])
             except Exception as e:
                 sensor = None
 
@@ -110,9 +110,9 @@ class eventClient(object):
 
             return print("Event saved to db")
 
-        elif topics[-1] == "delete":
+        elif topics[1] == "delete":
             try:
-                sensor = Sensor.objects.get(sensor=topics[1])
+                sensor = Sensor.objects.get(sensor=topics[-1])
             except Exception as e:
                 sensor = None
 
