@@ -2,3 +2,4 @@ paho-mqtt
 mongoengine
 uuid
 datetime
+mongoengine_goodjson

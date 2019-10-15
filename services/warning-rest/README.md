@@ -122,12 +122,12 @@ curl --header "Content-Type: application/json" \
 __Deletes all warnings on target.__
 
 ```bash
-curl -X DELETE 'http://ip:port/api/v1/warning?target=$target_uuid'
+curl -X DELETE 'http://ip:port/api/v1/warning?uuid=$target_uuid'
 ```
 
 #### Parameters
 
-- `target` :  the identification of the target of warning
+- `uuid` :  the identification of the target of warning
 
 #### Response
 

@@ -17,7 +17,7 @@ class WarningREST(object):
 
         # Find warning with the required uuid
         try:
-            warnings = WarningSchema.objects.get(target=params['target'])
+            warnings = WarningSchema.objects(target=params['uuid'])
         except Exception as e:
             raise cherrypy.HTTPError(404, str(e))
 
@@ -49,7 +49,7 @@ class WarningREST(object):
     @cherrypy.tools.json_out()
     def DELETE(self, **params):
         try:
-            warning = WarningSchema.objects.get(target=params['target'])
+            warning = WarningSchema.objects(target=params['uuid'])
         except Exception as e:
             raise cherrypy.HTTPError(404, str(e))
 
