@@ -46,7 +46,7 @@ Has said perviously, the system was design to be independently scalable. If you 
 In the image bellow can be seen a basic illustrative diagram of the architecture scheme used in __Greenscale__. The real architecture has more services and some things might be a little different for some special cases, but is a good illustrative explanation of the platform.
 
 
-<img src='./assets/architecture-diagram.png' height='500px'/>
+<img src='./assets/architecture-diagram2.png' height='500px'/>
 
 ### Reverse proxy and load balancing
 
