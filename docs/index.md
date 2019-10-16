@@ -73,6 +73,10 @@ The platform implements multiple services which are independent. The documentati
 - [telemetric-rest](./../services/telemetric-rest/README.md)
 - [user](./../services/user/README.md)
 - [web](./../services/web/README.md)
+- [event-emitter-mqtt](./../services/event-emitter-mqtt/README.md)
+- [actuator](./../services/actuator/README.md)
+- [warning-mqtt](./../services/warning-mqtt/README.md)
+- [warning-rest](./../services/warning-rest/README.md)
 
 # Test
 
