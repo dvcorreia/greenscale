@@ -12,10 +12,12 @@ Events can be _added_ through MQTT on the channel `event/add/$sensor_uuid` passi
 ```json
 {
     "event-type": "warning || actuator",
-    "target": "target_uuid",
+    "target": "$uuid",  // target uuid
     "logic": "(gt, gte, lt, lte, eq)",
-    "logic-value": $decimal_value
-}
+    "logic-value": $decimal_value,
+    "warning-message": "String", // necessary if event-type is warning
+    "actuation-type": "momentary || switch",
+    "time": $integer_in_seconds
 ```
 The `logic` entry follow has:
 
@@ -27,10 +29,16 @@ The `logic` entry follow has:
 
 The `logic_value` decimal number will only retain 2 decimal places in the _database_.
 
-CMD Line test example:
+CMD _Warning_ Line test example:
 
 ```bash
-mosquitto_pub -h localhost -t event/add/79d845b0-3d42-4907-98da-7faa3ae2a82c -m "{\"event-type\": \"warning\",\"target\":\"f2e274b0-1856-45b2-b00e-3cba6ce2ddff\",\"logic\":\"lt\",\"logic-value\":50.1}"
+mosquitto_pub -h localhost -t event/add/658c50b6-5c7e-4d77-82b3-d919e276ef28 -m "{\"event-type\": \"warning\",\"target\":\"e898784b-cd54-4584-b67b-1ae5019b6a51\",\"logic\":\"gte\",\"logic-value\":90,\"warning-message\":\"Water tank almost full\"}"
+```
+
+CMD _Actuator_ Line test example:
+
+```bash
+mosquitto_pub -h localhost -t event/add/658c50b6-5c7e-4d77-82b3-d919e276ef28 -m "{\"event-type\": \"actuator\",\"target\":\"e898784b-cd54-4584-b67b-1ae5019b6a51\",\"logic\":\"lt\",\"logic-value\":10,\"actuation-type\":\"momentary\",\"time\":3}"
 ```
 
 ### Delete

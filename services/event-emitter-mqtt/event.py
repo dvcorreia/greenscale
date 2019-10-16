@@ -5,6 +5,7 @@ import json
 import re
 import os
 import datetime
+import threading
 
 
 class eventClient(object):
@@ -71,6 +72,9 @@ class eventClient(object):
             return print("Error! " + message.topic +
                          " channel topic doesn't match the platform standard")
 
+        if not self.UUIDv4.match(topics[-1]):
+            return print("Error! uuid " + topics[-1] + " is not valid")
+
         data = json.loads(str(message.payload.decode("utf-8")))
 
         if topics[0] == "sensor":
@@ -81,9 +85,6 @@ class eventClient(object):
             pass
 
     def onMessageEvent(self, message, topics, data):
-        if not self.UUIDv4.match(topics[-1]):
-            return print("Error! uuid " + topics[-1] + " is not valid")
-
         if topics[1] == "add":
             # Try grab the sensor from the DB
             try:
@@ -94,13 +95,20 @@ class eventClient(object):
             if sensor is None:
                 # Create sensor in event db and add event
                 sensor = Sensor()
-                sensor.sensor = topics[1]
+                sensor.sensor = topics[-1]
 
             event = Event()
             event.event_type = data['event-type']
-            event.target = data['target']
+            if data.get('target') is not None:
+                event.target = data['target']
             event.logic = data['logic']
             event.logic_value = data['logic-value']
+            if data.get('warning-message') is not None:
+                event.warning_message = data['warning-message']
+            if data.get('actuation-type') is not None:
+                event.actuation_type = data['actuation-type']
+            if data.get('time') is not None:
+                event.time = data['time']
             sensor.events.append(event)
 
             try:
@@ -140,8 +148,6 @@ class eventClient(object):
             return print("Channel " + message.topic + " not handled")
 
     def onMessageTelemetricProbe(self, message, topics, data):
-        if not self.UUIDv4.match(topics[-1]):
-            return print("Error! uuid " + topics[-1] + " is not valid")
         # Try to check if the sensor has an event associated
         try:
             sensor = Sensor.objects.get(sensor=topics[-1])
@@ -152,10 +158,7 @@ class eventClient(object):
         for idx, eventidx in enumerate(sensor.events):
             # Process events
             self.process_event(value=float(data['value']),
-                               event_type=eventidx['event_type'],
-                               target=eventidx['target'],
-                               logic=eventidx['logic'],
-                               logic_value=eventidx['logic_value'])
+                               event=eventidx)
             sensor.events[idx].last_occurred = datetime.datetime.utcnow
 
         try:
@@ -163,22 +166,46 @@ class eventClient(object):
         except Exception as e:
             return print("Couldn't update db: " + str(e))
 
-    def process_event(self, value, event_type, target, logic, logic_value):
+    def process_event(self, value, event):
         # Process logic
         logicFlag = {
-            eventVerificationCatalog[0]: value > logic_value,
-            eventVerificationCatalog[1]: value >= logic_value,
-            eventVerificationCatalog[2]: value < logic_value,
-            eventVerificationCatalog[3]: value <= logic_value,
-            eventVerificationCatalog[4]: value == logic_value
-        }.get(logic, False)
+            eventVerificationCatalog[0]: value > event['logic_value'],
+            eventVerificationCatalog[1]: value >= event['logic_value'],
+            eventVerificationCatalog[2]: value < event['logic_value'],
+            eventVerificationCatalog[3]: value <= event['logic_value'],
+            eventVerificationCatalog[4]: value == event['logic_value']
+        }.get(event['logic'], False)
 
         if logicFlag is False:
             return
 
         # Verify if target uuid is valid
-        if not self.UUIDv4.match(str(target)):
+        if not self.UUIDv4.match(str(event['target'])):
             return
 
-        # publish on the event type
-        return self.publish(event_type + "/" + str(target), {"value": "ON"})
+        if event['event_type'] == 'actuator':
+            # Check the time of actuation
+            if event['actuation_type'] == 'momentary':
+                self.publish(
+                    "actuator/" + str(event['target']), {"value": "ON"})
+                # Generate thread with the OFF switch
+                # return threading.Timer(event['time'], self.publish("actuator/" + str(event['target']), {"value": "OFF"})).start()
+                return threading.Timer(event['time'],
+                                       lambda: eventClient(os.environ['HOST'],
+                                                           int(os.environ['PORT']),
+                                                           []).publish("actuator/" + str(event['target']), {"value": "OFF"})
+                                       ).start()
+            elif event['actuation_type'] == 'switch':
+                return self.publish("actuator/" + str(event['target']), {"value": "SWITCH"})
+            else:
+                pass
+        elif event['event_type'] == 'warning':
+            if event['warning_message'] is None:
+                return self.publish("warning/" + str(event['target']), {"message": "No warning message"})
+            else:
+                return self.publish("warning/" + str(event['target']), {"message": event['warning_message']})
+        else:
+            pass
+
+        # publish on the event type with event not know
+        return self.publish(event['event_type'] + "/" + str(event['target']), {"message": "Event type type not know"})
