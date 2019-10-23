@@ -3,6 +3,7 @@
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 
+#include <discover.h>
 #include <config.h>
 
 // Function initialization
@@ -17,11 +18,11 @@ void processActuator(byte actuatorPin, const char *value);
   char endpoint2[128];
 #endif
 
-const size_t capacity = JSON_OBJECT_SIZE(2) + 70;
+const size_t capacityDOC = JSON_OBJECT_SIZE(3) + 70;
 
 WiFiClient espClient;
 PubSubClient client(espClient);
-StaticJsonDocument<capacity> doc;
+StaticJsonDocument<capacityDOC> doc;
 
 void callback(char *topic, byte *payload, unsigned int length)
 {
@@ -58,7 +59,7 @@ void reconnect()
   // Loop until we're reconnected
   while (!client.connected())
   {
-    Serial.print("Attempting MQTT connection...");
+    Serial.print("\nAttempting MQTT connection...");
     // Create a random client ID
     String clientId = "ESP8266Client-";
     clientId += String(random(0xffff), HEX);
@@ -93,12 +94,23 @@ void setup(){
   client.setServer(MQTT_HOST, MQTT_PORT);
   client.setCallback(callback);
 
+  // Gerate discover class
+  Discover discover = Discover();
+
 #if ACTUATOR1 == true
+  // Send enroll
+  sprintf(endpoint1, "http://%s:%i/api/v1/actuator", PLATFORM_HOST, PLATFORM_PORT);
+  discover.pulse(endpoint1, ACTUATOR1_UUID, ACTUATOR1_DESCRIPTION, USER);
+
   pinMode(ACTUATOR1PIN, OUTPUT);
   digitalWrite(ACTUATOR1PIN, LOW);
   sprintf(endpoint1, "actuator/%s", ACTUATOR1_UUID);
 #endif
 #if ACTUATOR2 == true
+  // Send enroll
+  sprintf(endpoint2, "http://%s:%i/api/v1/actuator", PLATFORM_HOST, PLATFORM_PORT);
+  discover.pulse(endpoint2, ACTUATOR2_UUID, ACTUATOR2_DESCRIPTION, USER);
+
   pinMode(ACTUATOR2PIN, OUTPUT);
   digitalWrite(ACTUATOR2PIN, LOW);
   sprintf(endpoint2, "actuator/%s", ACTUATOR2_UUID);

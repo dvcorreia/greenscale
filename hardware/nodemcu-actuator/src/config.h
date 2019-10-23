@@ -7,15 +7,17 @@
 //#define STAPSK "Y76H05F9F1Q"
 
 // Change to your username in the plarform
-#define USER "dvcorreia"
+#define USER "stefano724"
 
 // Put to true the actuator you are using
 #define ACTUATOR1 true
 #define ACTUATOR1_UUID "9e13dd7f-2480-4b17-95b7-9407f17b5373"
+#define ACTUATOR1_DESCRIPTION "LED1"
 #define ACTUATOR1PIN D0
 #define ACTUATOR2 true
 #define ACTUATOR2_UUID "9e13dd7f-2480-4b17-95b7-9407f17b5374"
 #define ACTUATOR2PIN D1
+#define ACTUATOR2_DESCRIPTION "LED2"
 
 // Platform host and port
 #define PLATFORM_HOST "192.168.1.127"
