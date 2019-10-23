@@ -33,8 +33,7 @@ curl -X GET 'http://ip:port/api/v1/actuator?uuid=$uuid'
             "oid": "$actuator_objectId",
             "uuid": "$actuator_id",
             "description": "$description",
-            "time": "$time_to_on",
-            "ip": "$ip_if_there_is_one"
+            "username": "$username"
         }
     }
     ```
@@ -56,15 +55,15 @@ curl -X GET 'http://ip:port/api/v1/actuator?uuid=$uuid'
 ```bash
 curl --header "Content-Type: application/json" \
      --request POST \
-     --data '{"description":"$description","time":"$time","ip":"$ip"}' \
+     --data '{"description":"$description","uuid":"$uuid","username":"$username"}' \
      http://ip:port/api/v1/actuator
 ```
 
 #### Body
 
 - `description`: description of the warning 
-- `time`: if momentary actuation, defines the time of that actuation
-- `ip`: ip of the actuator _(optional)_
+- `uuid`: uuid if you want to specify, it will generate one if not
+- `username`: username of user that owns the actuator
 
 #### Response
 
@@ -77,8 +76,7 @@ curl --header "Content-Type: application/json" \
             "oid": "$actuator_objectId",
             "uuid": "$actuator_id",
             "description": "$description",
-            "time": "$time_to_on",
-            "ip": "$ip_if_there_is_one"
+            "username": "$username"
         }
     }
     ```

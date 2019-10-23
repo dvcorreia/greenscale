@@ -1,6 +1,7 @@
 import cherrypy
 from mongoengine import connect
 import os
+import re
 from schemas import Actuator
 
 
@@ -31,11 +32,23 @@ class ActuatorREST(object):
     @cherrypy.tools.json_out()
     def POST(self, **params):
         actuator = Actuator()
-        actuator.description = cherrypy.request.json.get('description')
-        if cherrypy.request.json.get('time') is not None:
-            actuator.time = cherrypy.request.json.get('time')
-        if cherrypy.request.json.get('ip') is not None:
-            actuator.ip = cherrypy.request.json.get('ip')
+
+        print(cherrypy.request.json)
+
+        if cherrypy.request.json.get("uuid") is not None:
+            UUIDv4 = re.compile(
+                r'^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}$', re.IGNORECASE)
+
+            if not UUIDv4.match(cherrypy.request.json.get('uuid')):
+                return print("Error! uuid " + cherrypy.request.json.get('uuid') + " is not valid")
+
+            actuator.uuid = cherrypy.request.json.get('uuid')
+
+        if cherrypy.request.json.get('description') is not None:
+            actuator.description = cherrypy.request.json.get('description')
+
+        if cherrypy.request.json.get('username') is not None:
+            actuator.username = cherrypy.request.json.get('username')
 
         try:
             actuator.save()
