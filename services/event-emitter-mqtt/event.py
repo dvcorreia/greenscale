@@ -107,6 +107,8 @@ class eventClient(object):
                 event.warning_message = data['warning-message']
             if data.get('actuation-type') is not None:
                 event.actuation_type = data['actuation-type']
+            if data.get('actuation-state') is not None:
+                event.actuation_state = data['actuation-state']
             if data.get('time') is not None:
                 event.time = data['time']
             sensor.events.append(event)
@@ -197,6 +199,8 @@ class eventClient(object):
                                        ).start()
             elif event['actuation_type'] == 'switch':
                 return self.publish("actuator/" + str(event['target']), {"value": "SWITCH"})
+            elif event['actuation_type'] == 'fixed':
+                return self.publish("actuator/" + str(event['target']), {"value": event['actuation_state']})
             else:
                 pass
         elif event['event_type'] == 'warning':

@@ -3,8 +3,9 @@ import datetime
 import uuid
 
 eventTypeCatalog = ('actuator', 'warning')
+eventActuationState = ('ON', 'OFF')
 eventVerificationCatalog = ('gt', 'gte', 'lt', 'lte', 'eq')
-eventActuationType = ('momentary', 'switch')
+eventActuationType = ('momentary', 'switch', 'fixed')
 
 
 class Event(EmbeddedDocument):
@@ -17,6 +18,7 @@ class Event(EmbeddedDocument):
     logic_value = DecimalField(precision=2, rounding='ROUND_HALF_UP')
     warning_message = StringField(required=False)
     actuation_type = StringField(required=False, choices=eventActuationType)
+    actuation_state = StringField(required=False, choices=eventActuationState)
     time = IntField(required=False)
 
 
