@@ -15,17 +15,20 @@ First you need to create a file called `config.h` inside the `./src` directory. 
 // Put to true the actuator you are using
 #define ACTUATOR1 true
 #define ACTUATOR1_UUID "9e13dd7f-2480-4b17-95b7-9407f17b5373"
+#define ACTUATOR1_DESCRIPTION "LED1"
 #define ACTUATOR1PIN D0
-#define ACTUATOR2 true
+
+#define ACTUATOR2 false
 #define ACTUATOR2_UUID "9e13dd7f-2480-4b17-95b7-9407f17b5374"
 #define ACTUATOR2PIN D1
+#define ACTUATOR2_DESCRIPTION "LED2"
 
 // Platform host and port
-#define PLATFORM_HOST "http://locahost"
+#define PLATFORM_HOST "192.168.8.108"
 #define PLATFORM_PORT 80
 
 // MQTT broker host and port
-#define MQTT_HOST "http://locahost"
+#define MQTT_HOST "192.168.8.108"
 #define MQTT_PORT 1883
 ```
 
