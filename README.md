@@ -9,7 +9,7 @@ The platform also provides a data visualization and monitoring web application.
 </p>
 <table align="center" style="margin-left: auto; margin-right: auto;">
   <tr>
-    <th><a href="https://youtu.be/txl12j3NZx">Promotional Vídeo</a></th>
+    <th><a href="https://youtu.be/txl12j3NZx">Promotional Video</a></th>
     <th><a href="https://youtu.be/f0_565IYZWs">Demo</a></th>
   </tr>
 </table>
